@@ -1,0 +1,77 @@
+#navigation-bar {
+    background-color: transparent !important;
+}
+#logo-navbar-div {
+    width: 90px;
+    height: 90px;
+}
+#logo-navbar {
+    width: 80px;
+    height: 80px;
+    background: url("src/assets/icons/logo.png") center no-repeat;
+    background-size: 72px 72px;
+}
+#nav-bar {
+    border-radius: 28px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    background-color: rgba(237, 218, 184, 0.74);
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#nav-bar>a {
+    font-weight: 400;
+    color: #3E3C5C;
+    padding: 8px 28px;
+    font-size: 18px;
+    margin-right: 40px;
+    text-align: center;
+}
+#nav-bar>a:nth-child(7) {
+    margin-right: 0;
+}
+.active-page {
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    margin-right: 40px;
+    background-color: #3E3C5C;
+    color: white !important;
+    border-radius: 28px;
+    font-weight: 600 !important;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+}
+.hover-nav-bar:hover {
+    font-weight: 600 !important;
+    border: 3px solid #3E3C5C;
+    border-radius: 28px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    transition: all 0.1s ease-in-out;
+    transform: translateY(-4px);
+}
+#log-out {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    cursor: pointer;
+}
+#log-out:hover {
+    width: 42px;
+    height: 42px;
+    transition: all 0.3s ease-in-out;
+}
+#log-out svg:hover path {
+    filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.54));
+    transition: all 0.3s ease-in-out;
+}
+@media all and (max-width: 991px) {
+    #nav-bar>a {
+        margin-right: 0;
+    }
+    #log-out {
+        position: relative;
+        top: 10px;
+        bottom: 0;
+        margin: auto;
+    }
+}
