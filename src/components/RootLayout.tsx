@@ -1,11 +1,15 @@
 import {Navigation} from "./Navigation.tsx";
-import {Outlet} from "react-router";
+import {Outlet, useLocation} from "react-router";
 
 export const RootLayout = () => {
+
+    const {pathname} = useLocation();
+    const showNavigation = pathname !== "/";
+
     return (
         <>
-            <Navigation></Navigation>
-            <Outlet></Outlet>
+            {showNavigation && <Navigation/>}
+            <Outlet/>
         </>
     );
 };
