@@ -1,0 +1,240 @@
+#box-login {
+    width: 1220px;
+    height: 1260px;
+    position: absolute;
+    border-radius: 250px 250px 250px 250px;
+    top: -140px;
+    left: 970px;
+    clip-path: polygon(0px 0px, 100% 0%, 100% 100%, 0% 100%);
+    animation-duration: 1s;
+}
+#box-login.rotate-and-color {
+    transform: rotate(30deg);
+    background-color: rgba(237, 218, 184, 0.95); /* darker - #3E3C5C*/
+}
+#registration-form-wrapper {
+    width: 30dvw;
+    height: 745px;
+    position: absolute;
+    top: 0;
+    right: 155px;
+    margin: 0;
+    animation-duration: 1s;
+}
+#email-reg,#password-reg,#name-reg,#role-reg {
+    width: 25dvw;
+    height: 100px;
+    position: relative;
+    top: 215px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#name-reg {
+    position: absolute;
+    top: 225px;
+}
+#email-reg {
+    position: absolute;
+    top: 320px;
+}
+#password-reg {
+    position: absolute;
+    top: 420px;
+}
+#email-input-reg,#password-input-reg,#name-input-reg,#role-input-reg {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-radius: 0;
+    border-bottom: 2px solid #3E3C5C;
+    background-color: rgba(237, 218, 184, 0.11);
+}
+.form-floating > input + label:after,#role-label-reg:after {
+    background-color: rgba(233, 208, 169, 0.45) !important;
+}
+#email-input-reg:focus,#password-input-reg:focus,#name-input-reg:focus,#role-input-reg:focus {
+    border-bottom: 3px solid #3E3C5C;
+    border-top: none;
+    border-radius: 10px;
+    background-color: rgba(233, 208, 169, 0.65);
+    box-shadow: rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
+}
+#login-button-div-reg {
+    width: 25dvw;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+}
+#login-button-reg {
+    font-family: "Poppins", sans-serif;
+    color: white;
+    font-weight: 500;
+    background-color: rgba(80, 77, 117, 0.75);
+    border-color: rgba(80, 77, 117, 0.75);
+}
+#login-button-reg:hover {
+    color: white;
+    border-radius: 15px;
+    background-color: #3E3C5C;
+    border-left: 4px solid #B4A1A4;
+    border-right: 4px solid #B4A1A4;
+    border-top: none;
+    border-bottom: none;
+    font-weight: 600;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 19px 38px, rgba(0, 0, 0, 0.22) 0 15px 12px;
+}
+#sign-up-div-reg {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    color: #3E3C5C;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 110px;
+}
+#email-logo-reg,#password-logo-reg,#user-logo-reg,#confirm-password-logo {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 50px;
+    z-index: 2;
+    margin: auto;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+#user-logo-reg {
+    top: 240px;
+}
+#email-logo-reg {
+    top: 342px;
+}
+#password-logo-reg {
+    top: 438px;
+}
+#confirm-password-logo {
+    top: 538px;
+}
+#email-logo-reg.focused,#password-logo-reg.focused,#user-logo-reg.focused,#confirm-password-logo.focused {
+    width: 28px;
+    height: 28px;
+    right: 55px;
+}
+#email-logo-reg.vanished,#password-logo-reg.vanished {
+    opacity: 0; /* Fades out */
+    pointer-events: none; /* Prevents interaction */
+}
+#welcome-text.text-01-left {
+    top: 65px;
+    left: 60px;
+    animation-duration: 1.4s;
+}
+#welcome-text-2.text-02-left {
+    top: 225px;
+    left: 60px;
+    animation-duration: 1.4s;
+}
+#registration-section {
+    width: 98dvw;
+    height: 745px;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#image-registration {
+    width: 790px;
+    height: 500px;
+    position: absolute;
+    top: 200px;
+    left: 0;
+}
+#logo-reg {
+    width: 90px;
+    height: 90px;
+    background: url("src/assets/icons/logo.png") center no-repeat;
+    background-size: 82px 82px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+#sign-up-button-2 {
+    width: 55px;
+    height: 20px;
+    color: rgba(18, 0, 255, 0.63);
+    text-decoration: underline;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#sign-up-button-2:hover {
+    color: rgb(18, 0, 255);
+}
+#create-acc-text-01 {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    font-weight: 680;
+    color: #3E3C5C;
+    top: 120px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#create-acc-text-02>p {
+    margin: 0;
+}
+#create-acc-text-02 {
+    width: 265px;
+    height: 27px;
+    font-weight: 400;
+    color: #3E3C5C;
+    position: absolute;
+    top: 155px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#check-box-reg {
+    width:14px;
+    aspect-ratio: 1;
+    vertical-align: middle;
+    background-color: #f3e8d7;
+    border: 1px solid #3E3C5C;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+#check-box-reg:checked {
+    appearance: auto;
+    background-color: blue;
+}
+#show-password-reg {
+    width: 130px;
+    height: 30px;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 20px 130px;
+    color: #3E3C5C;
+    font-weight: 480;
+    font-size: 14px;
+    top: 489px;
+    left: 47px;
+    align-items: center;
+    justify-items: center;
+}
+#role-reg {
+    top: 545px;
+}
