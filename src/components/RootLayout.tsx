@@ -4,7 +4,7 @@ import {Outlet, useLocation} from "react-router";
 export const RootLayout = () => {
 
     const {pathname} = useLocation();
-    const showNavigation = pathname !== "/";
+    const showNavigation = pathname !== "/" && pathname !== "/signup";
 
     return (
         <>
