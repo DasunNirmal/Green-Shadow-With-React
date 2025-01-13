@@ -1,0 +1,247 @@
+.allowOverFlow-y {
+    overflow-y: scroll;
+}
+/*#registration-section,#dashboard-section,#navigation-bar,#field-section,
+#crop-section,#staff-section,#vehicle-section,#equipment-section,#logs-section {
+    display: none;
+}*/
+#login-section {
+    width: 85dvw;
+    height: 725px;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#login-form-wrapper {
+    width: 30dvw;
+    height: 700px;
+    background-color: rgba(233, 208, 169, 0);
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    animation-duration: 1s;
+}
+#email,#password {
+    width: 25dvw;
+    height: 100px;
+    top: 245px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#email-input,#password-input {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-radius: 0;
+    border-bottom: 2px solid #3E3C5C;
+    background-color: rgba(237, 218, 184, 0.11);
+}
+.inputRed::-webkit-file-upload-button {
+    color: red !important;
+}
+.red::placeholder {
+    color: red !important;
+}
+.inValidData-input {
+    border: 2px solid red !important;
+}
+.inValidData{
+    border-bottom: 2px solid red !important;
+}
+.label-color-red {
+    color: red !important;
+}
+.form-floating > input + label:after {
+    background-color: rgba(237, 218, 184, 0.74) !important;
+}
+#email-input:focus,#password-input:focus {
+    border-bottom: 3px solid #3E3C5C;
+    border-top: none;
+    border-radius: 10px;
+    background-color: rgb(237, 218, 184);
+    box-shadow: rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
+}
+#login-button-div {
+    width: 25dvw;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 140px;
+}
+#box-login {
+    width: 1220px;
+    height: 1260px;
+    position: absolute;
+    background: rgba(80, 77, 117, 0.75); /* darker - #3E3C5C*/
+    border-radius: 250px 250px 250px 250px;
+    top: -140px;
+    left: 920px;
+    clip-path: polygon(0px 0px, 100% 0%, 100% 100%, 0% 100%);
+    transform: rotate(-30deg);
+    animation-duration: 1s;
+}
+#image-login {
+    width: 730px;
+    height: 610px;
+    position: absolute;
+    top: 310px;
+    left: 110px;
+    right: 0;
+    transform: rotate(30deg);
+}
+#login-button {
+    font-family: "Poppins", sans-serif;
+    color: white;
+    font-weight: 500;
+    background-color: rgba(80, 77, 117, 0.75);
+    border-color: rgba(80, 77, 117, 0.75);
+}
+#login-button:hover {
+    color: white;
+    border-radius: 15px;
+    background-color: #3E3C5C;
+    border-left: 4px solid #B4A1A4;
+    border-right: 4px solid #B4A1A4;
+    border-top: none;
+    border-bottom: none;
+    font-weight: 600;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 19px 38px, rgba(0, 0, 0, 0.22) 0 15px 12px;
+}
+#sign-up-div {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    color: #3E3C5C;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 90px;
+    font-weight: 400;
+}
+#email-logo,#password-logo {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 50px;
+    z-index: 2;
+    margin: auto;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+#email-logo {
+    top: 260px;
+}
+#password-logo {
+    top: 380px;
+}
+#email-logo.focused,#password-logo.focused {
+    width: 28px;
+    height: 28px;
+    right: 55px;
+}
+#email-logo.vanished,#password-logo.vanished {
+    opacity: 0; /* Fades out */
+    pointer-events: none; /* Prevents interaction */
+}
+#logo {
+    width: 90px;
+    height: 90px;
+    background: url("src/assets/icons/logo.png") center no-repeat;
+    background-size: 82px 82px;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 405px;
+    margin: auto;
+}
+#brand-name,#slogan {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+}
+#brand-name {
+    font-weight: 720;
+    color: #3E3C5C;
+    top: 64px;
+    left: 0;
+    right: 55px;
+    margin: auto;
+}
+#slogan {
+    font-weight: 400;
+    color: #3E3C5C;
+    top: 105px;
+    left: 52px;
+    right: 0;
+    margin: auto;
+}
+#welcome-text {
+    width: fit-content;
+    height: fit-content;
+    color: #f5f5f5;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 46px;
+    position: absolute;
+    top: 65px;
+    right: 360px;
+    animation-duration: 1.4s;
+}
+#welcome-text-2 {
+    width: fit-content;
+    height: fit-content;
+    color: #f5f5f5;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 24px;
+    position: absolute;
+    top: 165px;
+    right: 475px;
+    animation-duration: 1.4s;
+}
+#sign-up-button {
+    width: fit-content;
+    height: fit-content;
+    color: rgba(18, 0, 255, 0.63);
+    text-decoration: underline;
+    cursor: pointer;
+}
+#sign-up-button:hover {
+    color: rgb(18, 0, 255);
+}
+#check-box-login {
+    width:14px;
+    aspect-ratio: 1;
+    vertical-align: middle;
+    background-color: #f3e8d7;
+    border: 1px solid #3E3C5C;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+#check-box-login:checked {
+    appearance: auto;
+    background-color: blue;
+}
+#show-password {
+    width: 130px;
+    height: 30px;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 20px 130px;
+    color: #3E3C5C;
+    font-weight: 480;
+    font-size: 14px;
+    top: 435px;
+    left: 48px;
+    align-items: center;
+    justify-items: center;
+}
