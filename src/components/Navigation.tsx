@@ -13,6 +13,8 @@ export const Navigation = () => {
         let activePageCss = '';
         if (type === subpage) {
             activePageCss = ' active-page';
+        } else {
+            activePageCss = ' hover-nav-bar';
         }
         return activePageCss;
     }
@@ -31,12 +33,12 @@ export const Navigation = () => {
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav" id="nav-bar">
                         <Link className={`nav-link ${activePage('home')}`} to='/home'>Home</Link>
-                        <a className="nav-link" id="field">Field</a>
-                        <a className="nav-link" id="crop">Crop</a>
-                        <a className="nav-link" id="staff">Staff</a>
-                        <a className="nav-link" id="vehicle">Vehicle</a>
-                        <a className="nav-link" id="equipment">Equipment</a>
-                        <a className="nav-link" id="logs">Logs</a>
+                        <Link className={`nav-link ${activePage('field')}`} to='/field'>Field</Link>
+                        <Link className={`nav-link ${activePage('crop')}`} to='/crop'>Crop</Link>
+                        <Link className={`nav-link ${activePage('staff')}`} to='/staff'>Staff</Link>
+                        <Link className={`nav-link ${activePage('vehicle')}`} to='/vehicle'>Vehicle</Link>
+                        <Link className={`nav-link ${activePage('equipment')}`} to='/Equipment'>Equipment</Link>
+                        <Link className={`nav-link ${activePage('logs')}`} to='/logs'>Logs</Link>
                     </div>
                     <div id="log-out">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
