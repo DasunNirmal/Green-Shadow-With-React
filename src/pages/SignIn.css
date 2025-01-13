@@ -1,10 +1,6 @@
 .allowOverFlow-y {
     overflow-y: scroll;
 }
-/*#registration-section,#dashboard-section,#navigation-bar,#field-section,
-#crop-section,#staff-section,#vehicle-section,#equipment-section,#logs-section {
-    display: none;
-}*/
 #login-section {
     width: 85dvw;
     height: 725px;
