@@ -38,7 +38,7 @@ export const Navigation = () => {
                         <Link className={`nav-link ${activePage('crop')}`} to='/crop'>Crop</Link>
                         <Link className={`nav-link ${activePage('staff')}`} to='/staff'>Staff</Link>
                         <Link className={`nav-link ${activePage('vehicle')}`} to='/vehicle'>Vehicle</Link>
-                        <Link className={`nav-link ${activePage('equipment')}`} to='/Equipment'>Equipment</Link>
+                        <Link className={`nav-link ${activePage('equipment')}`} to='/equipment'>Equipment</Link>
                         <Link className={`nav-link ${activePage('logs')}`} to='/logs'>Logs</Link>
                     </div>
                     <div id="log-out" onClick={() => navigate('')}>
