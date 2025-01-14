@@ -1,0 +1,78 @@
+#staff-section {
+    width: 98vw;
+    height: 930px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+    background-color: rgba(255, 233, 198, 0.74);
+    position: relative;
+    top: 20px;
+    margin: auto;
+    border-radius: 30px;
+    padding: 20px;
+}
+#staff-content-card-left {
+    width: 1526px;
+    height: 506px;
+    border: 2px solid #3E3C5C;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+
+#staff-content-card-left > div {
+    width: 280px;
+    height: 100px;
+}
+
+#staff-id-div, #staff-first-name-div, #staff-last-name-div,
+#staff-email-div, #staff-phone-div, #staff-designation-div,
+#staff-dob-div, #staff-role-div, #staff-birth-div, #staff-gender-div,
+#staff-joined-div, #staff-address-line1-div, #staff-address-line2-div,
+#staff-address-line3-div, #staff-address-line4-div, #staff-address-line5-div {
+    display: flex;
+    flex-direction: column;
+}
+
+#staff-content-card-left label {
+    margin-bottom: 8px;
+}
+#button-div-staff {
+    width: 538px !important;
+    height: 40px !important;
+    position: relative !important;
+    top: 30px;
+    display: flex;
+    gap: 40px;
+}
+#save-staff, #update-staff, #delete-staff, #clear-staff {
+    width: 110px !important;
+}
+
+#search-staff-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#txtSearch-staff {
+    flex: 1;
+    max-width: 300px;
+}
+
+#Tbl-staff, #search-staff-div {
+    position: relative;
+    top: 50px;
+}
+#txtSearchFields-staff {
+    flex: 1;
+    max-width: 180px;
+}
+#btnSearchFields-staff {
+    position: relative;
+    bottom: 38px;
+    left: 198px;
+    width: 80px;
+}
