@@ -1,0 +1,43 @@
+label {
+    color: #3E3C5C;
+}
+.form-control {
+    border:1px solid #3E3C5C;
+    border-radius: 15px;
+}
+.form-control:focus {
+    border:2px solid #3E3C5C;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(62, 60, 92, 0.6);
+}
+.btn-primary,.btn-secondary,.btn-danger,.btn-warning {
+    color: white;
+    border-radius: 16px;
+    font-family: "Poppins", sans-serif;
+    background-color: rgba(80, 77, 117, 0.75);
+    border-color: rgba(80, 77, 117, 0.75);
+}
+.btn-primary:hover,.btn-secondary:hover,.btn-danger:hover,.btn-warning:hover {
+    color: white;
+    font-weight: 600;
+    background-color: #3E3C5C;
+    border-color: #3E3C5C;
+}
+table.table-bordered > thead > tr > th{
+    border:2px solid #3E3C5C;
+    background-color: #e1e0ef;
+    color: #3E3C5C;
+    text-align: center;
+    font-weight: 950;
+}
+table.table-bordered > tbody {
+    border:2px solid #3E3C5C;
+    text-align: center;
+}
+table.table.table-bordered > tbody > tr > td {
+    color: #3E3C5C;
+}
+.btn-primary:active,.btn-secondary:active,.btn-danger:active,.btn-warning:active {
+    background-color: rgba(80, 77, 117, 0.75) !important;
+    color: #e4d2be !important;
+    border: 2px solid #3E3C5C !important;
+}
