@@ -1,0 +1,93 @@
+#equipment-section {
+    width: 98vw;
+    height: 800px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+    background-color: rgba(255, 233, 198, 0.74);
+    position: relative;
+    top: 20px;
+    margin: auto;
+    border-radius: 30px;
+    padding: 20px;
+}
+#equipment-content-card-left {
+    width: 1526px;
+    height: 360px;
+    border: 2px solid #3E3C5C;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+
+#equipment-content-card-left > div {
+    width: 275px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+#equipment-content-card-left label {
+    margin-bottom: 8px;
+}
+
+#button-div-equipment {
+    position: relative !important;
+    width: 558px !important;
+    height: 40px !important;
+    top: 31px;
+    left: 0;
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 0;
+}
+
+#save-equipment, #update-equipment, #delete-equipment, #clear-equipment {
+    width: 110px !important;
+}
+
+#search-fields-equipment-div, #search-employees-div {
+    position: relative;
+    width: 300px !important;
+}
+
+#txtSearchFields-equipment, #txtSearchEmployees {
+    flex: 1;
+    max-width: 200px;
+}
+
+#btnSearchFields-equipment, #btnSearchEmployees {
+    position: relative;
+    bottom: 40px;
+    left: 220px;
+    width: 80px;
+}
+
+#Tbl-equipment {
+    position: relative;
+    top: 20px;
+}
+
+#Tbl-equipment table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#search-equipment-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#txtSearch-equipment {
+    flex: 1;
+    max-width: 300px;
+}
+
+#Tbl-equipment, #search-equipment-div {
+    position: relative;
+    top: 50px;
+}
