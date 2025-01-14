@@ -1,0 +1,73 @@
+#crop-section {
+    width: 98vw;
+    height: 735px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+    background-color: rgba(255, 233, 198, 0.74);
+    position: relative;
+    top: 20px;
+    margin: auto;
+    border-radius: 30px;
+    padding: 20px;
+}
+#crop-content-card-left {
+    width: 1526px;
+    height: 300px;
+    border: 2px solid #3E3C5C;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+#crop-content-card-left > div {
+    width: 280px;
+    height: 100px;
+}
+#crop-code-div, #crop-common-name-div, #crop-scientific-name-div,
+#crop-category-div, #crop-season-div, #crop-image-div {
+    display: flex;
+    flex-direction: column;
+}
+#crop-content-card-left label {
+    margin-bottom: 8px;
+}
+#button-div-crop {
+    position: relative !important;
+    width: 538px !important;
+    height: 40px !important;
+    top: 10px;
+    left: 100px;
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+#save-crops, #update-crops, #delete-crops, #clear-crops {
+    width: 110px !important;
+}
+#search-crops-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+#txtSearch-crops {
+    flex: 1;
+    max-width: 300px;
+}
+#Tbl-crops, #search-crops-div {
+    position: relative;
+    top: 50px;
+}
+#search-field-div {
+    width: 180px !important;
+}
+#btnSearchField {
+    position: relative !important;
+    left: 200px;
+    bottom: 38px;
+}
+#crop-field-div {
+    position: relative !important;
+    left: 100px;
+}
