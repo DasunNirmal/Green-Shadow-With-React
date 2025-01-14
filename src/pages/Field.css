@@ -1,0 +1,62 @@
+#field-section {
+    width: 98vw;
+    height: 735px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+    background-color: rgba(255, 233, 198, 0.74);
+    position: relative;
+    top: 20px;
+    margin: auto;
+    border-radius: 30px;
+    padding: 20px;
+}
+#field-content-card-left {
+    width: 1230px;
+    height: 300px;
+    border: 2px solid #3E3C5C;
+    border-radius: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+#field-content-card-left > div {
+    width: 280px;
+    height: 100px;
+}
+#field-id-div, #field-name-div, #field-location-div,
+#field-size-div, #field-image1-div,
+#field-image2-div {
+    display: flex;
+    flex-direction: column;
+}
+#field-content-card-left label {
+    margin-bottom: 8px;
+}
+#button-div-field {
+    position: relative !important;
+    width: 538px !important;
+    height: 40px !important;
+    top: 10px;
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+#save-fields,#update-fields,#delete-fields,#clear-fields {
+    width: 110px !important;
+}
+#search-fields-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+#txtSearch-fields {
+    flex: 1;
+    max-width: 300px;
+}
+#Tbl-fields,#search-fields-div {
+    position: relative;
+    top: 50px;
+}
