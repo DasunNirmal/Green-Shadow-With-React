@@ -1,0 +1,96 @@
+#vehicle-section {
+    width: 98vw;
+    height: 825px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+    background-color: rgba(255, 233, 198, 0.74);
+    position: relative;
+    top: 20px;
+    margin: auto;
+    border-radius: 30px;
+    padding: 20px;
+}
+#vehicle-content-card-left {
+    width: 1526px;
+    height: 385px;
+    border: 2px solid #3E3C5C;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+
+#vehicle-content-card-left > div {
+    width: 280px;
+    height: 100px;
+}
+
+#vehicle-code-div, #vehicle-license-plate-div, #vehicle-fuel-type-div,
+#vehicle-category-div, #vehicle-remarks-div, #vehicle-status-div {
+    display: flex;
+    flex-direction: column;
+}
+
+#vehicle-content-card-left label {
+    margin-bottom: 8px;
+}
+
+#button-div-vehicle {
+    position: relative !important;
+    width: 538px !important;
+    height: 40px !important;
+    top: 30px;
+    left: 0;
+    display: flex;
+    gap: 40px;
+    margin-top: 0;
+}
+
+#save-vehicles, #update-vehicles, #delete-vehicles, #clear-vehicles {
+    width: 110px !important;
+}
+
+#search-vehicles-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#txtSearch-vehicles {
+    flex: 1;
+    max-width: 300px;
+}
+
+#Tbl-vehicles, #search-vehicles-div {
+    position: relative;
+    top: 50px;
+}
+
+#search-vehicle-div {
+    width: 180px !important;
+}
+
+#btnSearchVehicle {
+    position: relative !important;
+    left: 200px;
+    bottom: 38px;
+}
+#search-employs-div {
+    width: 180px !important;
+}
+#btnSearchEmploys {
+    position: relative !important;
+    left: 200px;
+    bottom: 38px;
+}
+#employee-email-vehicle-div {
+    position: relative !important;
+    left: 100px;
+}
+#employee-role-vehicle-div,#employee-first-name-vehicle-div, #employee-member-id-vehicle-div{
+    width: 180px !important;
+    position: relative !important;
+    left: 100px;
+}
