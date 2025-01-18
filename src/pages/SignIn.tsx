@@ -5,6 +5,32 @@ export const SignIn = () => {
 
     const navigate = useNavigate();
 
+    const changeStyleOnFocused = (value:string) => {
+        const emailLogo = document.getElementById('email-logo');
+        const passwordLogo = document.getElementById('password-logo');
+        if (value == 'email') {
+            if (emailLogo) {
+                emailLogo.classList.add('focused');
+            }
+        }
+        if (value == 'password') {
+            if (passwordLogo) {
+                passwordLogo.classList.add('focused');
+            }
+        }
+    };
+
+    const changeStyleOnBlur = () => {
+        const emailLogo = document.getElementById('email-logo');
+        const passwordLogo = document.getElementById('password-logo');
+        if (emailLogo) {
+            emailLogo.classList.remove('focused');
+        }
+        if (passwordLogo) {
+            passwordLogo.classList.remove('focused');
+        }
+    };
+
     return (
         <div>
             <div id="box-login" className="animate__animated animate__zoomIn">
@@ -310,12 +336,12 @@ export const SignIn = () => {
                     </div>
 
                     <div className="form-floating mb-3" id="email">
-                        <input type="email" className="form-control" id="email-input" placeholder=""/>
+                        <input type="email" className="form-control" id="email-input" placeholder="" onFocus={() => changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}/>
                         <label htmlFor="email-input" id="email-label">Email address</label>
                     </div>
 
                     <div className="form-floating" id="password">
-                        <input type="password" className="form-control" id="password-input" placeholder="Password"/>
+                        <input type="password" className="form-control" id="password-input" placeholder="Password" onFocus={() => changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}/>
                         <label htmlFor="password-input" id="password-label">Password</label>
                     </div>
                     <div id="show-password">
