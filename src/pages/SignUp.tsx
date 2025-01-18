@@ -2,6 +2,45 @@ import './SignUp.css'
 import {Link} from "react-router";
 
 export const SignUp = () => {
+
+    const changeStyleOnFocused = (value:string) => {
+        const userLogo = document.getElementById('user-logo-reg');
+        const emailLogo = document.getElementById('email-logo-reg');
+        const passwordLogo = document.getElementById('password-logo-reg');
+
+        if (value == 'name') {
+            if (userLogo) {
+                userLogo.classList.add('focused');
+            }
+        }
+        if (value == 'email') {
+            if (emailLogo) {
+                emailLogo.classList.add('focused');
+            }
+        }
+        if (value == 'password') {
+            if (passwordLogo) {
+                passwordLogo.classList.add('focused');
+            }
+        }
+    };
+
+    const changeStyleOnBlur = () => {
+        const userLogo = document.getElementById('user-logo-reg');
+        const emailLogo = document.getElementById('email-logo-reg');
+        const passwordLogo = document.getElementById('password-logo-reg');
+
+        if (userLogo) {
+            userLogo.classList.remove('focused');
+        }
+        if (emailLogo) {
+            emailLogo.classList.remove('focused');
+        }
+        if (passwordLogo) {
+            passwordLogo.classList.remove('focused');
+        }
+    };
+
     return (
         <div>
             <style>{'body { background-color: rgba(80, 77, 117, 0.75); }'}</style>
@@ -1320,18 +1359,18 @@ export const SignUp = () => {
                     </div>
 
                     <div className="form-floating mb-3" id="name-reg">
-                        <input type="text" className="form-control" id="name-input-reg" placeholder=""/>
+                        <input type="text" className="form-control" id="name-input-reg" placeholder="" onFocus={() => changeStyleOnFocused('name')} onBlur={changeStyleOnBlur}/>
                         <label htmlFor="name-input-reg" id="name-label-reg">Name</label>
                     </div>
 
                     <div className="form-floating mb-3" id="email-reg">
-                        <input type="email" className="form-control" id="email-input-reg" placeholder=""/>
+                        <input type="email" className="form-control" id="email-input-reg" placeholder="" onFocus={() => changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}/>
                         <label htmlFor="email-input-reg" id="email-label-reg">Email address</label>
                     </div>
 
                     <div className="form-floating" id="password-reg">
                         <input type="password" className="form-control" id="password-input-reg"
-                               placeholder="Enter your password"/>
+                               placeholder="Enter your password" onFocus={() => changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}/>
                         <label htmlFor="password-input-reg" id="password-label-reg">Password</label>
                     </div>
 
