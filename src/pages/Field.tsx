@@ -2,6 +2,11 @@ import './Field.css'
 import './formControll.css'
 
 export const Field = () => {
+
+    function handleSubmit(event) {
+        console.log(event)
+    }
+
     return (
         <div>
             <section id="field-section" className="animate__animated animate__fadeIn">
@@ -37,7 +42,9 @@ export const Field = () => {
                     <div id="field-image1-div">
                         <label id="lblFieldImage1" htmlFor="txtFieldImage1">Field Image 01 :</label>
                         <input id="txtFieldImage1" className="form-control" type="file"
-                               aria-label="default input example"/>
+                               aria-label="default input example" onChange={(e) =>
+                            handleSubmit((e.target as HTMLInputElement).files![0])
+                        } />
                     </div>
 
                     {/*Field Image 02*/}
