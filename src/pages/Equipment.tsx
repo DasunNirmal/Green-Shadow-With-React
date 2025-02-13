@@ -82,21 +82,21 @@ export const Equipment = () => {
                         <button id="btnSearchFields-equipment" type="button" className="btn btn-primary">Search</button>
                     </div>
 
-                    {/*Field Code*/}
+                    {/*Fields Code*/}
                     <div id="field-code-div">
                         <label id="lblFieldCode" htmlFor="txtFieldCode">Field Code :</label>
                         <input id="txtFieldCode" className="form-control" type="text"
                                aria-label="default input example"/>
                     </div>
 
-                    {/*Field Name*/}
+                    {/*Fields Name*/}
                     <div id="field-name-equipment-div">
                         <label id="lblFieldName-equipment" htmlFor="txtFieldName">Field Name :</label>
                         <input id="txtFieldName-equipment" className="form-control" type="text"
                                aria-label="default input example"/>
                     </div>
 
-                    {/*Field Location*/}
+                    {/*Fields Location*/}
                     <div id="field-location-equipment-div">
                         <label id="lblFieldLocation-equipment" htmlFor="txtFieldLocation">Field Location :</label>
                         <input id="txtFieldLocation-equipment" className="form-control" type="text"
