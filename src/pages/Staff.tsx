@@ -118,14 +118,14 @@ export const Staff = () => {
                         <button id="btnSearchFields-staff" type="button" className="btn btn-primary">Search</button>
                     </div>
 
-                    {/*Field Code*/}
+                    {/*Fields Code*/}
                     <div id="field-code-staff-div">
                         <label id="lblFieldCode-staff" htmlFor="txtFieldCode-staff">Field Code :</label>
                         <input id="txtFieldCode-staff" className="form-control" type="text"
                                aria-label="default input example"/>
                     </div>
 
-                    {/*Field Name*/}
+                    {/*Fields Name*/}
                     <div id="field-name-staff-div">
                         <label id="lblFieldName-staff" htmlFor="txtFieldName-staff">Field Name :</label>
                         <input id="txtFieldName-staff" className="form-control" type="text"
