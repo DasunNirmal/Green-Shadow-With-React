@@ -24,6 +24,18 @@ export const saveFields = createAsyncThunk(
     }
 );
 
+export const getFields = createAsyncThunk(
+    'fields/getFields',
+    async () => {
+        try {
+            const response = await api.get('/get');
+            return response.data;
+        } catch (error) {
+            return console.error(error);
+        }
+    }
+)
+
 const FieldsSlice = createSlice({
     name: 'fields',
     initialState,
@@ -38,6 +50,16 @@ const FieldsSlice = createSlice({
             })
             .addCase(saveFields.pending, (state, action) => {
                 console.log('Pending saving filed : ', action.payload);
+            });
+        builder
+            .addCase(getFields.fulfilled, (state, action) => {
+                return action.payload || [];
+            })
+            .addCase(getFields.rejected, (state, action) => {
+                console.error('Error getting fields : ',action.payload);
+            })
+            .addCase(getFields.pending, (state, action) => {
+                console.log('Pending getting fields : ', action.payload);
             });
     }
 });
