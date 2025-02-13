@@ -10,6 +10,8 @@ import {Staff} from "./pages/Staff.tsx";
 import {Vehicle} from "./pages/Vehicle.tsx";
 import {Equipment} from "./pages/Equipment.tsx";
 import {Logs} from "./pages/Logs.tsx";
+import {Provider} from "react-redux";
+import {store} from "./store/Store.ts";
 
 function App() {
 
@@ -31,7 +33,9 @@ function App() {
 
   return (
       <>
-          <RouterProvider router={routers} />
+          <Provider store={store}>
+              <RouterProvider router={routers} />
+          </Provider>
       </>
   )
 }
