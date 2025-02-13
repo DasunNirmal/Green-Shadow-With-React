@@ -1,15 +1,16 @@
 import './Field.css'
 import './formControll.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Fields} from "../models/Fields.ts";
 import {AppDispatch} from "../store/Store.ts";
-import {saveFields} from "../reducers/FieldsSlice.ts";
+import {getFields, saveFields} from "../reducers/FieldsSlice.ts";
 
 export const Field = () => {
 
     const dispatch = useDispatch<AppDispatch>();
-    const fields = useSelector((state: {field: Fields[]}) => state.field);
+    const fields = useSelector((state: { fields: Fields[] }) => state.fields);
+
 
     const [fieldID, setFieldID] = useState('');
     const [fieldName, setFieldName] = useState('');
@@ -17,6 +18,11 @@ export const Field = () => {
     const [fieldSize, setFieldSize] = useState('');
     const [fieldImage_1, setFieldImage_1] = useState<File | undefined>();
     const [fieldImage_2, setFieldImage_2] = useState<File | undefined>();
+
+    useEffect(() => {
+        if (fields.length === 0)
+        dispatch(getFields());
+    },[dispatch,fields])
 
     const handleSubmit = async () => {
         const formData = new FormData();
@@ -30,6 +36,7 @@ export const Field = () => {
 
         try {
             await dispatch(saveFields(formData));
+            dispatch(getFields());
             console.log("Field data saved successfully.");
         } catch (e) {
             console.error("Error saving field data:", e);
@@ -132,8 +139,16 @@ export const Field = () => {
                         </tr>
                         </thead>
                         <tbody id="fields-table-tb">
-                        <tr>
-                        </tr>
+                        {fields?.map((field, index) => (
+                            <tr key={index}>
+                                <td>{field.field_code}</td>
+                                <td>{field.field_name}</td>
+                                <td>{field.field_location}</td>
+                                <td>{field.extent_size}</td>
+                                <td><img src={`data:image/png;base64,${field.img_01}`} width="140"/></td>
+                                <td><img src={`data:image/png;base64,${field.img_02}`} width="140"/></td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
