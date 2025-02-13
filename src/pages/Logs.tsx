@@ -56,21 +56,21 @@ export const Logs = () => {
                             </button>
                         </div>
 
-                        {/*Field Code*/}
+                        {/*Fields Code*/}
                         <div id="field-code-logs-div">
                             <label id="lblFieldCodeLogs" htmlFor="txtFieldCode">Field Code :</label>
                             <input id="txtFieldCodeLogs" className="form-control" type="text"
                                    aria-label="default input example"/>
                         </div>
 
-                        {/*Field Name*/}
+                        {/*Fields Name*/}
                         <div id="field-name-logs-div">
                             <label id="lblFieldNameLogs" htmlFor="txtFieldName">Field Name :</label>
                             <input id="txtFieldNameLogs" className="form-control" type="text"
                                    aria-label="default input example"/>
                         </div>
 
-                        {/*Field Location*/}
+                        {/*Fields Location*/}
                         <div id="field-location-logs-div">
                             <label id="lblFieldLocationLogs" htmlFor="txtFieldLocation">Field Location :</label>
                             <input id="txtFieldLocationLogs" className="form-control" type="text"
