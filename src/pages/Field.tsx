@@ -46,10 +46,11 @@ export const Field = () => {
     const handleSearch = async () => {
         try {
             const fetchedFields = await dispatch(searchFields(SearchedField));
-            console.log("Fields data fetched successfully.", fetchedFields.payload);
-
             if (fetchedFields.payload) {
-                setFieldID(fetchedFields.payload.field_code); // Directly access field_code
+                setFieldID(fetchedFields.payload.field_code);
+                setFieldName(fetchedFields.payload.field_name);
+                setFieldLocation(fetchedFields.payload.field_location);
+                setFieldSize(fetchedFields.payload.extent_size);
             } else {
                 console.warn("No field data found.");
             }
@@ -57,7 +58,6 @@ export const Field = () => {
             console.error("Error fetching fields data:", e);
         }
     };
-
 
     return (
         <div>
@@ -68,6 +68,7 @@ export const Field = () => {
                         <label id="lblFieldID" htmlFor="txtFieldID">Field ID :</label>
                         <input id="txtFieldID" className="form-control" type="text"
                                aria-label="default input example"
+                               value={fieldID}
                                onChange={(e) => setFieldID(e.target.value)}/>
                     </div>
 
@@ -76,6 +77,7 @@ export const Field = () => {
                         <label id="lblFieldName" htmlFor="txtFieldName">Field Name :</label>
                         <input id="txtFieldName" className="form-control" type="text"
                                aria-label="default input example"
+                               value={fieldName}
                                onChange={(e) => setFieldName(e.target.value)}/>
                     </div>
 
@@ -84,6 +86,7 @@ export const Field = () => {
                         <label id="lblFieldLocation" htmlFor="txtFieldLocation">Field Location :</label>
                         <input id="txtFieldLocation" className="form-control" type="text"
                                aria-label="default input example"
+                               value={fieldLocation}
                                onChange={(e) => setFieldLocation(e.target.value)}/>
                     </div>
 
@@ -92,6 +95,7 @@ export const Field = () => {
                         <label id="lblFieldSize" htmlFor="txtFieldSize">Field Size :</label>
                         <input id="txtFieldSize" className="form-control" type="text"
                                aria-label="default input example"
+                               value={fieldSize}
                                onChange={(e) => setFieldSize(e.target.value)}/>
                     </div>
 
