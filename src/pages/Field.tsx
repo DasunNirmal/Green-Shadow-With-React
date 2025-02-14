@@ -4,13 +4,12 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Fields} from "../models/Fields.ts";
 import {AppDispatch} from "../store/Store.ts";
-import {getFields, saveFields} from "../reducers/FieldsSlice.ts";
+import {getFields, saveFields, searchFields} from "../reducers/FieldsSlice.ts";
 
 export const Field = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const fields = useSelector((state: { fields: Fields[] }) => state.fields);
-
 
     const [fieldID, setFieldID] = useState('');
     const [fieldName, setFieldName] = useState('');
@@ -18,6 +17,7 @@ export const Field = () => {
     const [fieldSize, setFieldSize] = useState('');
     const [fieldImage_1, setFieldImage_1] = useState<File | undefined>();
     const [fieldImage_2, setFieldImage_2] = useState<File | undefined>();
+    const [SearchedField, setSearchedField] = useState('');
 
     useEffect(() => {
         if (fields.length === 0)
@@ -43,6 +43,20 @@ export const Field = () => {
         }
     };
 
+    const handleSearch = async () => {
+        try {
+            const fetchedFields = await dispatch(searchFields(SearchedField));
+            console.log("Fields data fetched successfully.", fetchedFields.payload);
+
+            if (fetchedFields.payload) {
+                setFieldID(fetchedFields.payload.field_code); // Directly access field_code
+            } else {
+                console.warn("No field data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching fields data:", e);
+        }
+    };
 
 
     return (
@@ -120,9 +134,9 @@ export const Field = () => {
                     {/*Label for Search*/}
                     <label id="lblSearchFields" htmlFor="txtSearch-fields">Search Fields :</label>
                     <input id="txtSearch-fields" className="form-control" type="text" placeholder="Search by ID or size"
-                           aria-label="default input example"/>
+                           aria-label="default input example" onChange={(e) => setSearchedField(e.target.value)}/>
                     {/*Search Button*/}
-                    <button id="search-field" type="button" className="btn btn-primary">Search</button>
+                    <button id="search-field" type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
                 </div>
 
                 {/*Table*/}
