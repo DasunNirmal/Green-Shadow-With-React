@@ -1,6 +1,6 @@
 import './Field.css'
 import './formControll.css'
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Fields} from "../models/Fields.ts";
 import {AppDispatch} from "../store/Store.ts";
@@ -18,6 +18,8 @@ export const Field = () => {
     const [fieldImage_1, setFieldImage_1] = useState<File | undefined>();
     const [fieldImage_2, setFieldImage_2] = useState<File | undefined>();
     const [SearchedField, setSearchedField] = useState('');
+    const inputRefForImg_01 = useRef<HTMLInputElement>(null);
+    const inputRefForImg_02 = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (fields.length === 0)
@@ -86,6 +88,17 @@ export const Field = () => {
         }
     };
 
+    const handleClear = async () => {
+        setFieldID('');
+        setFieldName('');
+        setFieldLocation('');
+        setFieldSize('');
+        if (inputRefForImg_01.current != null && inputRefForImg_02.current != null) {
+            inputRefForImg_01.current.value = '';
+            inputRefForImg_02.current.value = '';
+        }
+    };
+
     return (
         <div>
             <section id="field-section" className="animate__animated animate__fadeIn">
@@ -131,6 +144,7 @@ export const Field = () => {
                         <label id="lblFieldImage1" htmlFor="txtFieldImage1">Field Image 01 :</label>
                         <input id="txtFieldImage1" className="form-control" type="file"
                                aria-label="default input example"
+                               ref={inputRefForImg_01}
                                onChange={(e) => {
                                    const input = e.target as HTMLInputElement;
                                    if (input.files) {
@@ -144,6 +158,7 @@ export const Field = () => {
                         <label id="lblFieldImage2" htmlFor="txtFieldImage2">Field Image 02 :</label>
                         <input id="txtFieldImage2" className="form-control" type="file"
                                aria-label="default input example"
+                               ref={inputRefForImg_02}
                                onChange={(e) => {
                                    const input = e.target as HTMLInputElement;
                                    if (input.files) {
@@ -157,7 +172,7 @@ export const Field = () => {
                         <button type="button" className="btn btn-primary" id="save-fields" onClick={handleSubmit}>Save</button>
                         <button type="button" className="btn btn-secondary" id="update-fields" onClick={handleUpdate}>Update</button>
                         <button type="button" className="btn btn-danger" id="delete-fields" onClick={handleDelete}>Delete</button>
-                        <button type="button" className="btn btn-warning" id="clear-fields">Clear</button>
+                        <button type="button" className="btn btn-warning" id="clear-fields" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
                 {/*Search Section*/}
