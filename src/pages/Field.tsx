@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Fields} from "../models/Fields.ts";
 import {AppDispatch} from "../store/Store.ts";
-import {deleteFields, getFields, saveFields, searchFields} from "../reducers/FieldsSlice.ts";
+import {deleteFields, getFields, saveFields, searchFields, updateFields} from "../reducers/FieldsSlice.ts";
 
 export const Field = () => {
 
@@ -50,6 +50,23 @@ export const Field = () => {
             console.log("Field data deleted successfully.");
         } catch (e) {
             console.error("Error deleting field data:", e);
+        }
+    };
+
+    const handleUpdate = async () => {
+        const formData = new FormData();
+        formData.append("field_code", fieldID);
+        formData.append("field_name", fieldName);
+        formData.append("field_location", fieldLocation);
+        formData.append("extent_size", fieldSize);
+        if (fieldImage_1) formData.append("img_01", fieldImage_1);
+        if (fieldImage_2) formData.append("img_02", fieldImage_2);
+        try {
+            await dispatch(updateFields(formData));
+            dispatch(getFields());
+            console.log("Field data updated successfully.");
+        } catch (e) {
+            console.error("Error updating field data:", e);
         }
     };
 
@@ -138,7 +155,7 @@ export const Field = () => {
                     {/*Buttons*/}
                     <div id="button-div-field">
                         <button type="button" className="btn btn-primary" id="save-fields" onClick={handleSubmit}>Save</button>
-                        <button type="button" className="btn btn-secondary" id="update-fields">Update</button>
+                        <button type="button" className="btn btn-secondary" id="update-fields" onClick={handleUpdate}>Update</button>
                         <button type="button" className="btn btn-danger" id="delete-fields" onClick={handleDelete}>Delete</button>
                         <button type="button" className="btn btn-warning" id="clear-fields">Clear</button>
                     </div>
