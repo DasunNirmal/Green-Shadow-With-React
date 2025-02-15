@@ -24,6 +24,18 @@ export const saveFields = createAsyncThunk(
     }
 );
 
+export const deleteFields = createAsyncThunk(
+    'fields/deleteFields',
+    async (id: string) => {
+        try {
+            const response = await api.delete(`/delete/${id}`);
+            return response.data;
+        } catch (error) {
+            return console.error(error);
+        }
+    }
+);
+
 export const getFields = createAsyncThunk(
     'fields/getFields',
     async () => {
@@ -82,6 +94,16 @@ const FieldsSlice = createSlice({
             })
             .addCase(searchFields.pending, (state, action) => {
                 console.log('Pending searching fields : ', action.payload);
+            });
+        builder
+            .addCase(deleteFields.fulfilled, (state, action) => {
+                return state.filter(field => field.field_code !== action.payload);
+            })
+            .addCase(deleteFields.rejected, (state, action) => {
+                console.error('Error deleting fields : ',action.payload);
+            })
+            .addCase(deleteFields.pending, (state, action) => {
+                console.log('Pending deleting fields : ', action.payload);
             });
     }
 });
