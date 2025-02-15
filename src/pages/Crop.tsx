@@ -5,7 +5,7 @@ import {AppDispatch} from "../store/Store.ts";
 import {useEffect, useState} from "react";
 import Crops from "../models/Crops.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {getCrops, saveCrops} from "../reducers/CropsSlice.ts";
+import {getCrops, saveCrops, searchCrops} from "../reducers/CropsSlice.ts";
 
 export const Crop = () => {
 
@@ -20,7 +20,7 @@ export const Crop = () => {
     const [season, setSeason] = useState('');
     const [fieldCode, setFieldCode] = useState('');
     const [fieldName, setFieldName] = useState('');
-    // const [SearchedCrop, setSearchedCrop] = useState('');
+    const [SearchedCrop, setSearchedCrop] = useState('');
     const [SearchedField, setSearchedField] = useState('');
 
     useEffect(() => {
@@ -57,6 +57,24 @@ export const Crop = () => {
             console.log("Crop data saved successfully.");
         } catch (e) {
             console.error("Error saving crop data:", e);
+        }
+    };
+
+    const handleSearch = async () => {
+        try {
+            const fetchedCrops = await dispatch(searchCrops(SearchedCrop));
+            if (fetchedCrops.payload) {
+                setCropCode(fetchedCrops.payload.crop_code);
+                setCategory(fetchedCrops.payload.category);
+                setCommonName(fetchedCrops.payload.common_name);
+                setScientificName(fetchedCrops.payload.scientific_name);
+                setSeason(fetchedCrops.payload.season);
+                setFieldCode(fetchedCrops.payload.field_code);
+            } else {
+                console.warn("No crop data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching crops data:", e);
         }
     };
 
@@ -164,9 +182,10 @@ export const Crop = () => {
                     <label id="lblSearchCrops" htmlFor="txtSearch-crops">Search Crops :</label>
                     <input id="txtSearch-crops" className="form-control" type="text"
                            placeholder="Search by code or category"
-                           aria-label="default input example"/>
+                           aria-label="default input example"
+                    onChange={(e) => setSearchedCrop(e.target.value)}/>
                     {/*Search Button*/}
-                    <button id="search-crop" type="button" className="btn btn-primary">Search</button>
+                    <button id="search-crop" type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
                 </div>
 
                 {/*Table*/}
