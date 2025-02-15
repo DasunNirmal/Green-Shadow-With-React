@@ -10,7 +10,7 @@
     padding: 20px;
 }
 #crop-content-card-left {
-    width: 1526px;
+    width: 1486px;
     height: 300px;
     border: 2px solid #3E3C5C;
     border-radius: 30px;
@@ -37,7 +37,7 @@
     width: 538px !important;
     height: 40px !important;
     top: 10px;
-    left: 100px;
+    left: 150px;
     display: flex;
     gap: 40px;
     margin-top: 20px;
@@ -60,14 +60,24 @@
     top: 50px;
 }
 #search-field-div {
-    width: 180px !important;
+    width: 150px !important;
 }
 #btnSearchField {
     position: relative !important;
-    left: 200px;
+    left: 180px;
     bottom: 38px;
 }
 #crop-field-div {
     position: relative !important;
-    left: 100px;
+    left: 140px;
+    width: 148px !important;
+}
+#crop-field-div-code {
+    position: relative !important;
+    left: 130px;
+    width: 100px !important;
+}
+#crop-season-div {
+    position: relative !important;
+    width: 240px !important;
 }
