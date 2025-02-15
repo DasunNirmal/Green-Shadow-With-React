@@ -2,16 +2,15 @@ import './Crop.css'
 import './formControll.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
-import {Fields} from "../models/Fields.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Crops from "../models/Crops.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
+import {getCrops, saveCrops} from "../reducers/CropsSlice.ts";
 
 export const Crop = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const crops = useSelector((state: { crops: Crops[] }) => state.crops);
-    const fields = useSelector((state: { fields: Fields[] }) => state.fields);
 
     const [cropCode, setCropCode] = useState('');
     const [category, setCategory] = useState('');
@@ -21,8 +20,13 @@ export const Crop = () => {
     const [season, setSeason] = useState('');
     const [fieldCode, setFieldCode] = useState('');
     const [fieldName, setFieldName] = useState('');
-    const [SearchedCrop, setSearchedCrop] = useState('');
+    // const [SearchedCrop, setSearchedCrop] = useState('');
     const [SearchedField, setSearchedField] = useState('');
+
+    useEffect(() => {
+        if (crops.length === 0)
+            dispatch(getCrops());
+    },[dispatch,crops.length]);
 
     const handleFieldSearch = async () => {
         try {
@@ -38,6 +42,24 @@ export const Crop = () => {
         }
     };
 
+    const handleSave = async () => {
+        const formData = new FormData();
+        formData.append("crop_code", cropCode);
+        formData.append("category", category);
+        formData.append("common_name", commonName);
+        formData.append("scientific_name", scientificName);
+        formData.append("season", season);
+        formData.append("field_code", fieldCode);
+        if (cropImage) formData.append("img", cropImage);
+        try {
+            await dispatch(saveCrops(formData));
+            dispatch(getCrops());
+            console.log("Crop data saved successfully.");
+        } catch (e) {
+            console.error("Error saving crop data:", e);
+        }
+    };
+
     return (
         <>
             <section id="crop-section" className="animate__animated animate__fadeIn">
@@ -47,41 +69,58 @@ export const Crop = () => {
                     <div id="crop-code-div">
                         <label id="lblCropCode" htmlFor="txtCropCode">Crop Code :</label>
                         <input id="txtCropCode" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                                value={cropCode}
+                               onChange={(e) => setCropCode(e.target.value)}/>
                     </div>
 
                     {/*Common Name*/}
                     <div id="crop-common-name-div">
                         <label id="lblCommonName" htmlFor="txtCommonName">Common Name :</label>
                         <input id="txtCommonName" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={commonName}
+                               onChange={(e) => setCommonName(e.target.value)}/>
                     </div>
 
                     {/*Scientific Name*/}
                     <div id="crop-scientific-name-div">
                         <label id="lblScientificName" htmlFor="txtScientificName">Scientific Name :</label>
                         <input id="txtScientificName" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={scientificName}
+                               onChange={(e) => setScientificName(e.target.value)}/>
                     </div>
 
                     {/*Category*/}
                     <div id="crop-category-div">
                         <label id="lblCategory" htmlFor="txtCategory">Category :</label>
                         <input id="txtCategory" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={category}
+                               onChange={(e) => setCategory(e.target.value)}/>
                     </div>
 
                     {/*Season*/}
                     <div id="crop-season-div">
                         <label id="lblSeason" htmlFor="txtSeason">Season :</label>
-                        <input id="txtSeason" className="form-control" type="text" aria-label="default input example"/>
+                        <input id="txtSeason" className="form-control" type="text"
+                               aria-label="default input example"
+                               value={season}
+                               onChange={(e) => setSeason(e.target.value)}/>
                     </div>
 
                     {/*Crop Image*/}
                     <div id="crop-image-div">
                         <label id="lblCropImage" htmlFor="txtCropImage">Crop Image :</label>
                         <input id="txtCropImage" className="form-control" type="file"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               onChange={(e) => {
+                                   const input = e.target as HTMLInputElement;
+                                   if (input.files) {
+                                       setCropImage(input.files[0]);
+                                   }
+                               }}/>
                     </div>
 
                     {/*Search Field Section*/}
@@ -112,7 +151,7 @@ export const Crop = () => {
 
                     {/*Buttons*/}
                     <div id="button-div-crop">
-                        <button type="button" className="btn btn-primary" id="save-crops">Save</button>
+                        <button type="button" className="btn btn-primary" id="save-crops" onClick={handleSave}>Save</button>
                         <button type="button" className="btn btn-secondary" id="update-crops">Update</button>
                         <button type="button" className="btn btn-danger" id="delete-crops">Delete</button>
                         <button type="button" className="btn btn-warning" id="clear-crops">Clear</button>
@@ -145,8 +184,17 @@ export const Crop = () => {
                         </tr>
                         </thead>
                         <tbody id="crops-table-tb">
-                        <tr>
-                        </tr>
+                        {crops?.map((crop, index) => (
+                            <tr key={index}>
+                                <td>{crop.crop_code}</td>
+                                <td>{crop.common_name}</td>
+                                <td>{crop.scientific_name}</td>
+                                <td>{crop.category}</td>
+                                <td>{crop.season}</td>
+                                <td>{crop.field_code}</td>
+                                <td><img src={`data:image/png;base64,${crop.img}`} width="140"/></td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
