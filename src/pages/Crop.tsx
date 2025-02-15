@@ -5,7 +5,7 @@ import {AppDispatch} from "../store/Store.ts";
 import {useEffect, useState} from "react";
 import Crops from "../models/Crops.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {deleteCrops, getCrops, saveCrops, searchCrops} from "../reducers/CropsSlice.ts";
+import {deleteCrops, getCrops, saveCrops, searchCrops, updateCrops} from "../reducers/CropsSlice.ts";
 
 export const Crop = () => {
 
@@ -67,6 +67,24 @@ export const Crop = () => {
             console.log("Crop data deleted successfully.");
         } catch (e) {
             console.error("Error deleting crop data:", e);
+        }
+    };
+
+    const handleUpdate = async () => {
+        const formData = new FormData();
+        formData.append("crop_code", cropCode);
+        formData.append("category", category);
+        formData.append("common_name", commonName);
+        formData.append("scientific_name", scientificName);
+        formData.append("season", season);
+        formData.append("field_code", fieldCode);
+        if (cropImage) formData.append("img", cropImage);
+        try {
+            await dispatch(updateCrops(formData));
+            dispatch(getCrops());
+            console.log("Crop data updated successfully.");
+        } catch (e) {
+            console.error("Error updating crop data:", e);
         }
     };
 
@@ -180,7 +198,7 @@ export const Crop = () => {
                     {/*Buttons*/}
                     <div id="button-div-crop">
                         <button type="button" className="btn btn-primary" id="save-crops" onClick={handleSave}>Save</button>
-                        <button type="button" className="btn btn-secondary" id="update-crops">Update</button>
+                        <button type="button" className="btn btn-secondary" id="update-crops" onClick={handleUpdate}>Update</button>
                         <button type="button" className="btn btn-danger" id="delete-crops" onClick={handleDelete}>Delete</button>
                         <button type="button" className="btn btn-warning" id="clear-crops">Clear</button>
                     </div>
