@@ -5,7 +5,7 @@ import {AppDispatch} from "../store/Store.ts";
 import {useEffect, useState} from "react";
 import Crops from "../models/Crops.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {getCrops, saveCrops, searchCrops} from "../reducers/CropsSlice.ts";
+import {deleteCrops, getCrops, saveCrops, searchCrops} from "../reducers/CropsSlice.ts";
 
 export const Crop = () => {
 
@@ -57,6 +57,16 @@ export const Crop = () => {
             console.log("Crop data saved successfully.");
         } catch (e) {
             console.error("Error saving crop data:", e);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await dispatch(deleteCrops(cropCode));
+            dispatch(getCrops());
+            console.log("Crop data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting crop data:", e);
         }
     };
 
@@ -171,7 +181,7 @@ export const Crop = () => {
                     <div id="button-div-crop">
                         <button type="button" className="btn btn-primary" id="save-crops" onClick={handleSave}>Save</button>
                         <button type="button" className="btn btn-secondary" id="update-crops">Update</button>
-                        <button type="button" className="btn btn-danger" id="delete-crops">Delete</button>
+                        <button type="button" className="btn btn-danger" id="delete-crops" onClick={handleDelete}>Delete</button>
                         <button type="button" className="btn btn-warning" id="clear-crops">Clear</button>
                     </div>
                 </div>
