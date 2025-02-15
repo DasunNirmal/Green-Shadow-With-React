@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Fields} from "../models/Fields.ts";
 import {AppDispatch} from "../store/Store.ts";
-import {getFields, saveFields, searchFields} from "../reducers/FieldsSlice.ts";
+import {deleteFields, getFields, saveFields, searchFields} from "../reducers/FieldsSlice.ts";
 
 export const Field = () => {
 
@@ -22,7 +22,7 @@ export const Field = () => {
     useEffect(() => {
         if (fields.length === 0)
         dispatch(getFields());
-    },[dispatch,fields])
+    },[dispatch,fields.length]);
 
     const handleSubmit = async () => {
         const formData = new FormData();
@@ -40,6 +40,16 @@ export const Field = () => {
             console.log("Field data saved successfully.");
         } catch (e) {
             console.error("Error saving field data:", e);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await dispatch(deleteFields(fieldID));
+            dispatch(getFields());
+            console.log("Field data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting field data:", e);
         }
     };
 
@@ -129,7 +139,7 @@ export const Field = () => {
                     <div id="button-div-field">
                         <button type="button" className="btn btn-primary" id="save-fields" onClick={handleSubmit}>Save</button>
                         <button type="button" className="btn btn-secondary" id="update-fields">Update</button>
-                        <button type="button" className="btn btn-danger" id="delete-fields">Delete</button>
+                        <button type="button" className="btn btn-danger" id="delete-fields" onClick={handleDelete}>Delete</button>
                         <button type="button" className="btn btn-warning" id="clear-fields">Clear</button>
                     </div>
                 </div>
