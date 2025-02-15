@@ -1,6 +1,21 @@
 import './Dashboard.css'
+import {useDispatch, useSelector} from "react-redux";
+import {Fields} from "../models/Fields.ts";
+import {AppDispatch} from "../store/Store.ts";
+import {useEffect} from "react";
+import {getFields} from "../reducers/FieldsSlice.ts";
 
 export const Dashboard = () => {
+
+    const dispatchFields = useDispatch<AppDispatch>();
+    const fields = useSelector((state: { fields: Fields[] }) => state.fields);
+    const totalFields = fields.length;
+
+    useEffect(() => {
+        if (fields.length === 0)
+            dispatchFields(getFields());
+    },[dispatchFields,fields.length]);
+
     return (
         <div>
             <section id="dashboard-section" className="animate__animated animate__fadeIn">
@@ -8,7 +23,7 @@ export const Dashboard = () => {
                     <div className="card">
                         <h5>Total Fields</h5>
                         <img id="crop-image" src="src/assets/icons/field.png" alt="crop"/>
-                        <div className="total" id="field-total">0</div>
+                        <div className="total" id="field-total">{totalFields}</div>
                     </div>
                     <div className="card">
                         <h5>Total Crops</h5>
