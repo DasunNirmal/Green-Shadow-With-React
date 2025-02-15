@@ -2,7 +2,7 @@ import './Crop.css'
 import './formControll.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Crops from "../models/Crops.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
 import {deleteCrops, getCrops, saveCrops, searchCrops, updateCrops} from "../reducers/CropsSlice.ts";
@@ -22,6 +22,7 @@ export const Crop = () => {
     const [fieldName, setFieldName] = useState('');
     const [SearchedCrop, setSearchedCrop] = useState('');
     const [SearchedField, setSearchedField] = useState('');
+    const inoutRefImg = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (crops.length === 0)
@@ -106,6 +107,16 @@ export const Crop = () => {
         }
     };
 
+    const handleClear = async () => {
+        setCropCode('');
+        setCategory('');
+        setCommonName('');
+        setScientificName('');
+        setSeason('');
+        setFieldCode('');
+        if (inoutRefImg.current) inoutRefImg.current.value = '';
+    };
+
     return (
         <>
             <section id="crop-section" className="animate__animated animate__fadeIn">
@@ -161,6 +172,7 @@ export const Crop = () => {
                         <label id="lblCropImage" htmlFor="txtCropImage">Crop Image :</label>
                         <input id="txtCropImage" className="form-control" type="file"
                                aria-label="default input example"
+                               ref={inoutRefImg}
                                onChange={(e) => {
                                    const input = e.target as HTMLInputElement;
                                    if (input.files) {
