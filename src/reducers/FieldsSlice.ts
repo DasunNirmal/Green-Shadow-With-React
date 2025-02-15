@@ -36,6 +36,18 @@ export const deleteFields = createAsyncThunk(
     }
 );
 
+export const updateFields = createAsyncThunk(
+    'fields/updateFields',
+    async (fields: FormData) => {
+        try {
+            const response = await api.put(`/update/${fields.get('field_code')}`, fields);
+            return response.data;
+        } catch (error) {
+            return console.error(error);
+        }
+    }
+)
+
 export const getFields = createAsyncThunk(
     'fields/getFields',
     async () => {
@@ -76,6 +88,34 @@ const FieldsSlice = createSlice({
                 console.log('Pending saving filed : ', action.payload);
             });
         builder
+            .addCase(deleteFields.fulfilled, (state, action) => {
+                return state.filter(field => field.field_code !== action.payload);
+            })
+            .addCase(deleteFields.rejected, (state, action) => {
+                console.error('Error deleting fields : ',action.payload);
+            })
+            .addCase(deleteFields.pending, (state, action) => {
+                console.log('Pending deleting fields : ', action.payload);
+            });
+        builder
+            .addCase(updateFields.fulfilled, (state, action) => {
+                state.map((fields) => {
+                    if (fields.field_code === action.payload.field_code) {
+                        fields.field_name = action.payload.field_name;
+                        fields.field_location = action.payload.field_location;
+                        fields.extent_size = action.payload.extent_size;
+                        fields.img_01 = action.payload.img_01;
+                        fields.img_02 = action.payload.img_02;
+                    }
+                });
+            })
+            .addCase(updateFields.rejected, (state, action) => {
+                console.error('Error updating fields : ',action.payload);
+            })
+            .addCase(updateFields.pending, (state, action) => {
+                console.log('Pending updating fields : ', action.payload);
+        })
+        builder
             .addCase(getFields.fulfilled, (state, action) => {
                 return Array.isArray(action.payload) ? action.payload : [];
             })
@@ -94,16 +134,6 @@ const FieldsSlice = createSlice({
             })
             .addCase(searchFields.pending, (state, action) => {
                 console.log('Pending searching fields : ', action.payload);
-            });
-        builder
-            .addCase(deleteFields.fulfilled, (state, action) => {
-                return state.filter(field => field.field_code !== action.payload);
-            })
-            .addCase(deleteFields.rejected, (state, action) => {
-                console.error('Error deleting fields : ',action.payload);
-            })
-            .addCase(deleteFields.pending, (state, action) => {
-                console.log('Pending deleting fields : ', action.payload);
             });
     }
 });
