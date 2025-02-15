@@ -5,7 +5,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 export const initialState : Crops[] = [];
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/crop'
+    baseURL: 'http://localhost:3000/crops'
 });
 
 export const saveCrops = createAsyncThunk(
@@ -41,6 +41,30 @@ export const updateCrops = createAsyncThunk(
     async (crops: FormData) => {
         try {
             const response = await api.put(`/update/${crops.get('crop_code')}`, crops);
+            return response.data;
+        } catch (error) {
+            return console.error(error);
+        }
+    }
+);
+
+export const getCrops = createAsyncThunk(
+    'crops/getCrops',
+    async () => {
+        try {
+            const response = await api.get('/get');
+            return response.data;
+        } catch (error) {
+            return console.error(error);
+        }
+    }
+);
+
+export const searchCrops = createAsyncThunk(
+    'crops/searchCrops',
+    async (searchTerm: string) => {
+        try {
+            const response = await api.get(`/search/${searchTerm}`);
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -91,7 +115,27 @@ const CropsSlice = createSlice({
             })
             .addCase(updateCrops.pending, (state, action) => {
                 console.log('Pending updating crops : ', action.payload);
-        })
+        });
+        builder
+            .addCase(getCrops.fulfilled, (state, action) => {
+                return Array.isArray(action.payload) ? action.payload : [];
+            })
+            .addCase(getCrops.rejected, (state, action) => {
+                console.error('Error getting crops : ',action.payload);
+            })
+            .addCase(getCrops.pending, (state, action) => {
+                console.log('Pending getting crops : ', action.payload);
+            });
+        builder
+            .addCase(searchCrops.fulfilled, (state, action) => {
+                return Array.isArray(action.payload) ? action.payload : [];
+            })
+            .addCase(searchCrops.rejected, (state, action) => {
+                console.error('Error searching crops : ',action.payload);
+            })
+            .addCase(searchCrops.pending, (state, action) => {
+                console.log('Pending searching crops : ', action.payload);
+            });
     }
 });
 
