@@ -79,7 +79,7 @@ const FieldsSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(saveFields.fulfilled, (state, action) => {
-            state.push(action.payload);
+                state.push(action.payload);
             })
             .addCase(saveFields.rejected, (state, action) => {
                 console.error(action.error.message);
