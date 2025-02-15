@@ -212,7 +212,7 @@ export const Crop = () => {
                         <button type="button" className="btn btn-primary" id="save-crops" onClick={handleSave}>Save</button>
                         <button type="button" className="btn btn-secondary" id="update-crops" onClick={handleUpdate}>Update</button>
                         <button type="button" className="btn btn-danger" id="delete-crops" onClick={handleDelete}>Delete</button>
-                        <button type="button" className="btn btn-warning" id="clear-crops">Clear</button>
+                        <button type="button" className="btn btn-warning" id="clear-crops" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
 
