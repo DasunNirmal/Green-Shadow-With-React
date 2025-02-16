@@ -99,6 +99,10 @@ export const Crop = () => {
                 setScientificName(fetchedCrops.payload.scientific_name);
                 setSeason(fetchedCrops.payload.season);
                 setFieldCode(fetchedCrops.payload.field_code);
+                const fetchedFields = await dispatch(searchFields(fetchedCrops.payload.field_code));
+                if (fetchedFields.payload) {
+                    setFieldName(fetchedFields.payload.field_name);
+                }
             } else {
                 console.warn("No crop data found.");
             }
