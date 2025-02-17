@@ -198,8 +198,8 @@ export const Crop = () => {
                         <label id="lblCropFieldCode" htmlFor="txtCropFieldCode">Field Code :</label>
                         <input id="txtCropFieldCode" className="form-control" type="text"
                                aria-label="default input example"
-                        value={fieldCode}
-                        onChange={(e) => setFieldCode(e.target.value)}/>
+                               value={fieldCode}
+                               onChange={(e) => setFieldCode(e.target.value)}/>
                     </div>
 
                     {/*Field Name*/}
@@ -208,7 +208,7 @@ export const Crop = () => {
                         <input id="txtCropFieldName" className="form-control" type="text"
                                aria-label="default input example"
                                value={fieldName}
-                        onChange={(e) => setFieldName(e.target.value)}/>
+                               onChange={(e) => setFieldName(e.target.value)}/>
                     </div>
 
                     {/*Buttons*/}
