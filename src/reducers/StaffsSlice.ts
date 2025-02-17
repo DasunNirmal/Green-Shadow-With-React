@@ -112,6 +112,7 @@ const StaffsSlice = createSlice({
                         staffs.last_name = action.payload.last_name;
                         staffs.phone_no = action.payload.phone_no;
                         staffs.role = action.payload.role;
+                        staffs.field_code = action.payload.field_code;
                     }
                 });
             })
