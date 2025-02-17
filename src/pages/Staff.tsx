@@ -5,8 +5,7 @@ import {AppDispatch} from "../store/Store.ts";
 import Staffs from "../models/Staffs.ts";
 import {useEffect, useState} from "react";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {getStaffs, saveStaffs} from "../reducers/StaffsSlice.ts";
-import {getCrops} from "../reducers/CropsSlice.ts";
+import {deleteStaffs, getStaffs, saveStaffs, searchStaffs, updateStaffs} from "../reducers/StaffsSlice.ts";
 
 export const Staff = () => {
 
@@ -38,12 +37,35 @@ export const Staff = () => {
             dispatch(getStaffs());
     },[dispatch,staffs.length]);
 
+    const handleClear = () => {
+        setStaffID('');
+        setAddress01('');
+        setAddress02('');
+        setAddress03('');
+        setAddress04('');
+        setAddress05('');
+        setDesignation('');
+        setDob('');
+        setEmail('');
+        setFirstName('');
+        setGender('');
+        setJoinedDate('');
+        setLastName('');
+        setPhoneNumber('');
+        setRole('');
+        setFieldCode('');
+        setFieldName('');
+        setSearchedStaff('');
+        setSearchedField('');
+    };
+
     const handleFieldSearch = async () => {
         try {
             const fetchedFields = await dispatch(searchFields(SearchedField));
             if (fetchedFields.payload) {
                 setFieldCode(fetchedFields.payload.field_code);
                 setFieldName(fetchedFields.payload.field_name);
+                setSearchedField('');
             } else {
                 console.warn("No field data found.");
             }
@@ -59,10 +81,68 @@ export const Staff = () => {
       try {
           await dispatch(saveStaffs(staffObj));
           dispatch(getStaffs());
+          handleClear();
           console.log("Staff data saved successfully.");
       } catch (e) {
           console.error("Error saving staff data:", e);
       }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await dispatch(deleteStaffs(staffID));
+            dispatch(getStaffs());
+            handleClear();
+            console.log("Staff data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting staff data:", e);
+        }
+    };
+
+    const handleUpdate = async () => {
+        const staffObj = new Staffs(staffID, address01, address02, address03, address04, address05, designation, dob, email, firstName, gender, joinedDate, lastName, phoneNumber,
+            role, fieldCode);
+        try {
+            await dispatch(updateStaffs(staffObj));
+            dispatch(getStaffs());
+            handleClear();
+            console.log("Staff data updated successfully.");
+        } catch (e) {
+            console.error("Error updating staff data:", e);
+        }
+    };
+
+    const handleSearch = async () => {
+        try {
+            const fetchedStaffs = await dispatch(searchStaffs(SearchedStaff));
+            if (fetchedStaffs.payload) {
+                setStaffID(fetchedStaffs.payload.staff_id);
+                setAddress01(fetchedStaffs.payload.address_01);
+                setAddress02(fetchedStaffs.payload.address_02);
+                setAddress03(fetchedStaffs.payload.address_03);
+                setAddress04(fetchedStaffs.payload.address_04);
+                setAddress05(fetchedStaffs.payload.address_05);
+                setDesignation(fetchedStaffs.payload.designation);
+                setDob(fetchedStaffs.payload.dob);
+                setEmail(fetchedStaffs.payload.email);
+                setFirstName(fetchedStaffs.payload.first_name);
+                setGender(fetchedStaffs.payload.gender);
+                setJoinedDate(fetchedStaffs.payload.joined_date);
+                setLastName(fetchedStaffs.payload.last_name);
+                setPhoneNumber(fetchedStaffs.payload.phone_no);
+                setRole(fetchedStaffs.payload.role);
+                setFieldCode(fetchedStaffs.payload.field_code);
+                const fetchedFields = await dispatch(searchFields(fetchedStaffs.payload.field_code));
+                if (fetchedFields.payload) {
+                    setFieldName(fetchedFields.payload.field_name);
+                }
+                setSearchedStaff('');
+            } else {
+                console.warn("No staff data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching staffs data:", e);
+        }
     };
 
     return (
@@ -212,6 +292,7 @@ export const Staff = () => {
                         <input id="txtSearchFields-staff" className="form-control" type="text"
                                placeholder="Enter field code or name"
                                aria-label="default input example"
+                               value={SearchedField}
                                onChange={(e) => setSearchedField(e.target.value)}/>
                         <button id="btnSearchFields-staff" type="button" className="btn btn-primary" onClick={handleFieldSearch}>Search</button>
                     </div>
@@ -237,9 +318,9 @@ export const Staff = () => {
                     {/*Buttons*/}
                     <div id="button-div-staff">
                         <button type="button" className="btn btn-primary" id="save-staff" onClick={handleSave}>Save</button>
-                        <button type="button" className="btn btn-secondary" id="update-staff">Update</button>
-                        <button type="button" className="btn btn-danger" id="delete-staff">Delete</button>
-                        <button type="button" className="btn btn-warning" id="clear-staff">Clear</button>
+                        <button type="button" className="btn btn-secondary" id="update-staff" onClick={handleUpdate}>Update</button>
+                        <button type="button" className="btn btn-danger" id="delete-staff" onClick={handleDelete}>Delete</button>
+                        <button type="button" className="btn btn-warning" id="clear-staff" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
 
@@ -249,9 +330,10 @@ export const Staff = () => {
                     <label id="lblSearchStaff" htmlFor="txtSearch-staff">Search Staff :</label>
                     <input id="txtSearch-staff" className="form-control" type="text" placeholder="Search by ID or Name"
                            aria-label="default input example"
+                           value={SearchedStaff}
                            onChange={(e) => setSearchedStaff(e.target.value)}/>
                     {/*Search Button*/}
-                    <button id="search-staff" type="button" className="btn btn-primary">Search</button>
+                    <button id="search-staff" type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
                 </div>
 
                 {/*Table*/}
