@@ -1,14 +1,102 @@
 import './Logs.css'
 import './formControll.css'
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../store/Store.ts";
+import FieldLogs from "../models/FieldLogs.ts";
+import {searchFields} from "../reducers/FieldsSlice.ts";
+import {getFieldLogs, saveFieldLogs, searchFieldLogs} from "../reducers/FieldLogsSlice.ts";
 
 export const Logs = () => {
 
+    const dispatch = useDispatch<AppDispatch>();
+    const fieldLogs = useSelector((state: { fieldLogs: FieldLogs[]}) => state.fieldLogs);
+
     const [selectedLog, setSelectedLog] = useState('field');
+    const [fieldLogCode, setFieldLogCode] = useState('');
+    const [fieldLogDetails, setFieldLogDetails] = useState('');
+    const [fieldLogImage, setFieldLogImage] = useState<File | undefined>();
+    const [fieldLogDate, setFieldLogDate] = useState('');
+    const [fieldLocation, setFieldLocation] = useState('');
+    const [fieldName, setFieldName] = useState('');
+    const [fieldCode, setFieldCode] = useState('');
+    const inputRefForFieldImg = useRef<HTMLInputElement>(null);
+
+    const [SearchedCrop, setSearchedCrop] = useState('');
+    const [SearchedField, setSearchedField] = useState('');
+    const [SearchedFieldLog, setSearchedFieldLog] = useState('');
+
+    useEffect(() => {
+        if (fieldLogs.length === 0)
+            dispatch(getFieldLogs());
+    }, [dispatch, fieldLogs.length]);
+
+    const handleClear = async () => {
+        setFieldLogCode('');
+        setFieldLogDetails('');
+        setFieldLogDate('');
+        setFieldLocation('');
+        setFieldName('');
+        setFieldCode('');
+        if (inputRefForFieldImg.current != null) inputRefForFieldImg.current.value = '';
+    };
 
     const handleRadioChange = (logType:string) => {
         setSelectedLog(logType);
     }
+
+    const handleFieldSearch = async () => {
+        try {
+            const fetchedFields = await dispatch(searchFields(SearchedFieldLog));
+            if (fetchedFields.payload) {
+                setFieldCode(fetchedFields.payload.field_code);
+                setFieldName(fetchedFields.payload.field_name);
+                setFieldLocation(fetchedFields.payload.field_location);
+            } else {
+                console.warn("No field data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching fields data:", e);
+        }
+    };
+
+    const handleSave = async () => {
+        const formData = new FormData();
+        formData.append("log_code", fieldLogCode);
+        formData.append("details", fieldLogDetails);
+        formData.append("log_date", fieldLogDate);
+        formData.append("field_location", fieldLocation);
+        formData.append("field_name", fieldName);
+        formData.append("field_code", fieldCode);
+        if (fieldLogImage) formData.append("img", fieldLogImage);
+        try {
+            await dispatch(saveFieldLogs(formData));
+            dispatch(getFieldLogs());
+            handleClear();
+            console.log("Field Logs data saved successfully.");
+        } catch (e) {
+            console.error("Error saving field logs data:", e);
+        }
+    };
+
+    const handleFieldLogSearch = async () => {
+        try {
+            const fetchedFields = await dispatch(searchFieldLogs(SearchedFieldLog));
+            if (fetchedFields.payload) {
+                setFieldLogCode(fetchedFields.payload.log_code);
+                setFieldLogDetails(fetchedFields.payload.details);
+                setFieldLogDate(fetchedFields.payload.log_date);
+                setFieldLocation(fetchedFields.payload.field_location);
+                setFieldName(fetchedFields.payload.field_name);
+                setFieldCode(fetchedFields.payload.field_code);
+                setSearchedFieldLog('');
+            } else {
+                console.warn("No field data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching fields data:", e);
+        }
+    };
 
     return (
         <div>
@@ -16,21 +104,21 @@ export const Logs = () => {
                 <div id="select-logs-div">
                     <div className="form-check" id="field-log">
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="field-log-button"
-                               onClick={() => handleRadioChange('field')} checked={selectedLog === 'field'}/>
+                               onClick={() => handleRadioChange('field')} checked={selectedLog === 'field'} onChange={() => {}}/>
                         <label className="form-check-label" htmlFor="field-log-button">
                             Fields Logs
                         </label>
                     </div>
                     <div className="form-check" id="crop-log">
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="crop-log-button"
-                               onClick={() => handleRadioChange('crop')}/>
+                               onClick={() => handleRadioChange('crop')} onChange={() => {}}/>
                         <label className="form-check-label" htmlFor="crop-log-button">
                             Crops Logs
                         </label>
                     </div>
                     <div className="form-check" id="staff-log">
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="staff-log-button"
-                               onClick={() => handleRadioChange('staff')} />
+                               onClick={() => handleRadioChange('staff')} onChange={() => {}}/>
                         <label className="form-check-label" htmlFor="staff-log-button">
                             Staff Logs
                         </label>
@@ -44,15 +132,20 @@ export const Logs = () => {
                         <div id="log-code-div">
                             <label id="lblLogCode" htmlFor="txtLogCode">Log Code :</label>
                             <input id="txtLogCode" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={fieldLogCode}
+                                   onChange={(e) => setFieldLogCode(e.target.value)}/>
                         </div>
 
                         {/*Search Fields*/}
                         <div id="search-fields-logs-div">
                             <label id="lblSearchFieldsLogs" htmlFor="txtSearchFieldsLogs">Search Fields :</label>
                             <input id="txtSearchFieldsLogs" className="form-control" type="text"
-                                   placeholder="Enter field code or name" aria-label="default input example"/>
-                            <button id="btnSearchFieldsLogs" type="button" className="btn btn-primary">Search
+                                   placeholder="Enter field code or name"
+                                   aria-label="default input example"
+                                   value={SearchedField}
+                                   onChange={(e) => setSearchedField(e.target.value)}/>
+                            <button id="btnSearchFieldsLogs" type="button" className="btn btn-primary" onClick={handleFieldSearch}>Search
                             </button>
                         </div>
 
@@ -60,21 +153,27 @@ export const Logs = () => {
                         <div id="field-code-logs-div">
                             <label id="lblFieldCodeLogs" htmlFor="txtFieldCode">Field Code :</label>
                             <input id="txtFieldCodeLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={fieldCode}
+                                   onChange={(e) => setFieldCode(e.target.value)}/>
                         </div>
 
                         {/*Fields Name*/}
                         <div id="field-name-logs-div">
                             <label id="lblFieldNameLogs" htmlFor="txtFieldName">Field Name :</label>
                             <input id="txtFieldNameLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={fieldName}
+                                   onChange={(e) => setFieldName(e.target.value)}/>
                         </div>
 
                         {/*Fields Location*/}
                         <div id="field-location-logs-div">
                             <label id="lblFieldLocationLogs" htmlFor="txtFieldLocation">Field Location :</label>
                             <input id="txtFieldLocationLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={fieldLocation}
+                                   onChange={(e) => setFieldLocation(e.target.value)}/>
                         </div>
 
                         {/*Details*/}
@@ -82,30 +181,38 @@ export const Logs = () => {
                             <label id="lblFieldDetails" htmlFor="txtFieldDetails">Details :</label>
                             <textarea id="txtFieldDetails" className="form-control" rows={3}
                                       placeholder="Enter details here"
-                                      aria-label="default input example"></textarea>
+                                      aria-label="default input example"
+                                      value={fieldLogDetails}
+                                      onChange={(e) => setFieldLogDetails(e.target.value)}></textarea>
                         </div>
 
                         {/*Date*/}
                         <div id="log-date-div">
                             <label id="lblLogDate" htmlFor="txtLogDate">Date :</label>
                             <input id="txtLogDate" className="form-control" type="date"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={fieldLogDate}
+                                   onChange={(e) => setFieldLogDate(e.target.value)}/>
                         </div>
 
                         {/*Image*/}
                         <div id="log-image-div">
                             <label id="lblLogImage" htmlFor="txtLogImage">Image :</label>
                             <input id="txtLogImage" className="form-control" type="file"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                            ref={inputRefForFieldImg}
+                            onChange={(e) => {
+                                const input = e.target as HTMLInputElement;
+                                if (input.files)
+                                setFieldLogImage(e.target.files?.[0])}}/>
                         </div>
 
                         {/*Buttons*/}
                         <div id="button-div-field-logs">
-                            <button type="button" className="btn btn-primary" id="save-field-logs">Save</button>
-                            <button type="button" className="btn btn-secondary" id="update-field-logs">Update
-                            </button>
+                            <button type="button" className="btn btn-primary" id="save-field-logs" onClick={handleSave}>Save</button>
+                            <button type="button" className="btn btn-secondary" id="update-field-logs">Update</button>
                             <button type="button" className="btn btn-danger" id="delete-field-logs">Delete</button>
-                            <button type="button" className="btn btn-warning" id="clear-field-logs">Clear</button>
+                            <button type="button" className="btn btn-warning" id="clear-field-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
 
@@ -114,9 +221,12 @@ export const Logs = () => {
                         {/*Label for Search*/}
                         <label id="lblSearchFieldLogs" htmlFor="txtSearch-field-logs">Search Logs :</label>
                         <input id="txtSearch-field-logs" className="form-control" type="text"
-                               placeholder="log code or field name" aria-label="default input example"/>
+                               placeholder="log code or field name"
+                               aria-label="default input example"
+                        value={SearchedFieldLog}
+                        onChange={(e) => setSearchedFieldLog(e.target.value)}/>
                         {/*Search Button*/}
-                        <button id="search-field-logs" type="button" className="btn btn-primary">Search</button>
+                        <button id="search-field-logs" type="button" className="btn btn-primary" onClick={handleFieldLogSearch}>Search</button>
                     </div>
 
                     {/*Table*/}
@@ -135,8 +245,17 @@ export const Logs = () => {
                             </tr>
                             </thead>
                             <tbody id="field-logs-table-tb">
-                            <tr>
-                            </tr>
+                            {fieldLogs.map((fieldLog, index) => (
+                                <tr key={index}>
+                                    <td>{fieldLog.log_code}</td>
+                                    <td>{fieldLog.field_code}</td>
+                                    <td>{fieldLog.field_name}</td>
+                                    <td>{fieldLog.field_location}</td>
+                                    <td>{fieldLog.details}</td>
+                                    <td>{fieldLog.log_date}</td>
+                                    <td><img src={`data:image/png;base64,${fieldLog.img}`} width="140"/></td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
