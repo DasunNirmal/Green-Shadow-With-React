@@ -5,7 +5,7 @@ import {AppDispatch} from "../store/Store.ts";
 import Vehicles from "../models/Vehicle.ts";
 import {useEffect, useState} from "react";
 import {searchStaffs} from "../reducers/StaffsSlice.ts";
-import {getVehicles, saveVehicles} from "../reducers/VehicleSlice.ts";
+import {deleteVehicles, getVehicles, saveVehicles, searchVehicles, updateVehicles} from "../reducers/VehicleSlice.ts";
 
 export const Vehicle = () => {
 
@@ -73,6 +73,53 @@ export const Vehicle = () => {
             console.log("Vehicle data saved successfully.");
         } catch (e) {
             console.error("Error saving vehicle data:", e);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await dispatch(deleteVehicles(vehicleCode));
+            dispatch(getVehicles());
+            handleClear();
+            console.log("Vehicle data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting vehicle data:", e);
+        }
+    };
+
+    const handleUpdate = async () => {
+        const vehicleObj = new Vehicles(vehicleCode, email, firstName, fuelType, licensePlate, phoneNumber, remarks, role, status, vehicleCategory, staffID);
+        try {
+            await dispatch(updateVehicles(vehicleObj));
+            dispatch(getVehicles());
+            handleClear();
+            console.log("Vehicle data updated successfully.");
+        } catch (e) {
+            console.error("Error updating vehicle data:", e);
+        }
+    };
+
+    const handleSearch = async () => {
+        try {
+            const fetchedVehicles = await dispatch(searchVehicles(SearchedVehicle));
+            if (fetchedVehicles.payload) {
+                setVehicleCode(fetchedVehicles.payload.vehicle_code);
+                setEmail(fetchedVehicles.payload.email);
+                setFirstName(fetchedVehicles.payload.first_name);
+                setFuelType(fetchedVehicles.payload.fuel_type);
+                setLicensePlate(fetchedVehicles.payload.license_plate);
+                setPhoneNumber(fetchedVehicles.payload.phone_no);
+                setRemarks(fetchedVehicles.payload.remarks);
+                setRole(fetchedVehicles.payload.role);
+                setStatus(fetchedVehicles.payload.status);
+                setVehicleCategory(fetchedVehicles.payload.vehicle_category);
+                setStaffID(fetchedVehicles.payload.staff_id);
+                setSearchedVehicle('');
+            } else {
+                console.warn("No vehicle data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching vehicle data:", e);
         }
     };
 
@@ -196,9 +243,9 @@ export const Vehicle = () => {
                     {/*Buttons*/}
                     <div id="button-div-vehicle">
                         <button type="button" className="btn btn-primary" id="save-vehicles" onClick={handleSave}>Save</button>
-                        <button type="button" className="btn btn-secondary" id="update-vehicles">Update</button>
-                        <button type="button" className="btn btn-danger" id="delete-vehicles">Delete</button>
-                        <button type="button" className="btn btn-warning" id="clear-vehicles">Clear</button>
+                        <button type="button" className="btn btn-secondary" id="update-vehicles" onClick={handleUpdate}>Update</button>
+                        <button type="button" className="btn btn-danger" id="delete-vehicles" onClick={handleDelete}>Delete</button>
+                        <button type="button" className="btn btn-warning" id="clear-vehicles" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
 
@@ -211,7 +258,7 @@ export const Vehicle = () => {
                            aria-label="default input example"
                            value={SearchedVehicle}
                            onChange={(e) => setSearchedVehicle(e.target.value)}/>
-                    <button id="search-vehicle" type="button" className="btn btn-primary">Search</button>
+                    <button id="search-vehicle" type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
                 </div>
 
                 {/*Table*/}
