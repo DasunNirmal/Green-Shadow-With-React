@@ -3,8 +3,9 @@ import './formControll.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
 import Vehicles from "../models/Vehicle.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {searchStaffs} from "../reducers/StaffsSlice.ts";
+import {getVehicles, saveVehicles} from "../reducers/VehicleSlice.ts";
 
 export const Vehicle = () => {
 
@@ -19,11 +20,31 @@ export const Vehicle = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [remarks, setRemarks] = useState('');
     const [role, setRole] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('Available');
     const [vehicleCategory, setVehicleCategory] = useState('');
     const [staffID, setStaffID] = useState('');
     const [SearchedStaff, setSearchedStaff] = useState('');
     const [SearchedVehicle, setSearchedVehicle] = useState('');
+
+
+    useEffect(() => {
+        if (vehicles.length === 0)
+            dispatch(getVehicles());
+    },[dispatch,vehicles.length]);
+
+    const handleClear = async () => {
+        setVehicleCode('');
+        setEmail('');
+        setFirstName('');
+        setFuelType('');
+        setLicensePlate('');
+        setPhoneNumber('');
+        setRemarks('');
+        setRole('');
+        setStatus('Available');
+        setVehicleCategory('');
+        setStaffID('');
+    };
 
     const handleStaffSearch = async () => {
         try {
@@ -34,11 +55,24 @@ export const Vehicle = () => {
                 setFirstName(fetchedStaffs.payload.first_name);
                 setPhoneNumber(fetchedStaffs.payload.phone_no);
                 setRole(fetchedStaffs.payload.role);
+                setSearchedStaff('');
             } else {
                 console.warn("No staff data found.");
             }
         } catch (error) {
             console.error("Error fetching fields data:",error);
+        }
+    };
+
+    const handleSave = async () => {
+        const vehicleObj = new Vehicles(vehicleCode, email, firstName, fuelType, licensePlate, phoneNumber, remarks, role, status, vehicleCategory, staffID);
+        try {
+            await dispatch(saveVehicles(vehicleObj));
+            dispatch(getVehicles());
+            handleClear();
+            console.log("Vehicle data saved successfully.");
+        } catch (e) {
+            console.error("Error saving vehicle data:", e);
         }
     };
 
@@ -52,40 +86,52 @@ export const Vehicle = () => {
                     <div id="vehicle-code-div">
                         <label id="lblVehicleCode" htmlFor="txtVehicleCode">Vehicle Code :</label>
                         <input id="txtVehicleCode" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={vehicleCode}
+                               onChange={(e) => setVehicleCode(e.target.value)}/>
                     </div>
 
                     {/*License Plate Number*/}
                     <div id="vehicle-license-plate-div">
                         <label id="lblLicensePlate" htmlFor="txtLicensePlate">License Plate Number :</label>
                         <input id="txtLicensePlate" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={licensePlate}
+                               onChange={(e) => setLicensePlate(e.target.value)}/>
                     </div>
 
                     {/*Fuel Type*/}
                     <div id="vehicle-fuel-type-div">
                         <label id="lblFuelType" htmlFor="txtFuelType">Fuel Type :</label>
                         <input id="txtFuelType" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={fuelType}
+                               onChange={(e) => setFuelType(e.target.value)}/>
                     </div>
 
                     {/*Category*/}
                     <div id="vehicle-category-div">
                         <label id="lblVehicleCategory" htmlFor="txtCategory">Category :</label>
                         <input id="txtVehicleCategory" className="form-control" type="text"
-                               aria-label="default input example"/>
+                               aria-label="default input example"
+                               value={vehicleCategory}
+                               onChange={(e) => setVehicleCategory(e.target.value)}/>
                     </div>
 
                     {/*Remarks*/}
                     <div id="vehicle-remarks-div">
                         <label id="lblRemarks" htmlFor="txtRemarks">Remarks :</label>
-                        <input id="txtRemarks" className="form-control" type="text" aria-label="default input example"/>
+                        <input id="txtRemarks" className="form-control" type="text"
+                               aria-label="default input example"
+                               value={remarks}
+                               onChange={(e) => setRemarks(e.target.value)}/>
                     </div>
 
                     {/*Status*/}
                     <div id="vehicle-status-div">
                         <label htmlFor="txtStatus" id="lblStatus">Status (Available/Not Available) :</label>
-                        <select className="form-select" id="txtStatus" required>
+                        <select className="form-select" id="txtStatus" required
+                                defaultValue={status} onChange={(e) => setStatus(e.target.value)}>
                             <option>Available</option>
                             <option>Not Available</option>
                         </select>
@@ -149,7 +195,7 @@ export const Vehicle = () => {
 
                     {/*Buttons*/}
                     <div id="button-div-vehicle">
-                        <button type="button" className="btn btn-primary" id="save-vehicles">Save</button>
+                        <button type="button" className="btn btn-primary" id="save-vehicles" onClick={handleSave}>Save</button>
                         <button type="button" className="btn btn-secondary" id="update-vehicles">Update</button>
                         <button type="button" className="btn btn-danger" id="delete-vehicles">Delete</button>
                         <button type="button" className="btn btn-warning" id="clear-vehicles">Clear</button>
@@ -161,8 +207,10 @@ export const Vehicle = () => {
                     {/*Label for Search*/}
                     <label id="lblSearchVehicles" htmlFor="txtSearch-vehicles">Search Vehicles :</label>
                     <input id="txtSearch-vehicles" className="form-control" type="text"
-                           placeholder="vehicle code or license plate" aria-label="default input example"/>
-                    {/*Search Button*/}
+                           placeholder="vehicle code or license plate"
+                           aria-label="default input example"
+                           value={SearchedVehicle}
+                           onChange={(e) => setSearchedVehicle(e.target.value)}/>
                     <button id="search-vehicle" type="button" className="btn btn-primary">Search</button>
                 </div>
 
@@ -185,8 +233,21 @@ export const Vehicle = () => {
                         </tr>
                         </thead>
                         <tbody id="vehicles-table-tb">
-                        <tr>
-                        </tr>
+                        {vehicles.map((vehicle, index) => (
+                            <tr key={index}>
+                                <td>{vehicle.vehicle_code}</td>
+                                <td>{vehicle.license_plate}</td>
+                                <td>{vehicle.fuel_type}</td>
+                                <td>{vehicle.vehicle_category}</td>
+                                <td>{vehicle.remarks}</td>
+                                <td>{vehicle.status}</td>
+                                <td>{vehicle.staff_id}</td>
+                                <td>{vehicle.first_name}</td>
+                                <td>{vehicle.role}</td>
+                                <td>{vehicle.phone_no}</td>
+                                <td>{vehicle.email}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
