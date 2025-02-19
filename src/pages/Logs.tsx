@@ -14,7 +14,7 @@ import {
 } from "../reducers/FieldLogsSlice.ts";
 import CropLogs from "../models/CropLogs.ts";
 import {searchCrops} from "../reducers/CropsSlice.ts";
-import {getCropLogs, saveCropLogs, searchCropLogs} from "../reducers/CropLogsSlice.ts";
+import {deleteCropLogs, getCropLogs, saveCropLogs, searchCropLogs, updateCropLogs} from "../reducers/CropLogsSlice.ts";
 
 export const Logs = () => {
 
@@ -157,6 +157,17 @@ export const Logs = () => {
         }
     };
 
+    const handleCropLogsDelete = async () => {
+        try {
+            await dispatch(deleteCropLogs(cropLogCode));
+            dispatch(getCropLogs());
+            handleClear();
+            console.log("Crop Logs data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting crop logs data:", e);
+        }
+    };
+
     const handleFieldLogsUpdate = async () => {
         const formData = new FormData();
         formData.append("log_code", fieldLogCode);
@@ -169,11 +180,29 @@ export const Logs = () => {
         try {
             await dispatch(updateFieldLogs(formData));
             dispatch(getFieldLogs());
+            handleClear();
             console.log("Field Logs data updated successfully.");
         } catch (e) {
             console.error("Error updating field logs data:", e);
         }
     };
+
+    const handleCropLogsUpdate = async () => {
+        const formData = new FormData();
+        formData.append("log_code", cropLogCode);
+        formData.append("details", cropLogDetails);
+        formData.append("log_date", cropLogDate);
+        formData.append("crop_name", cropName);
+        formData.append("crop_code", cropCode);
+        if (cropLogImage) formData.append("img", cropLogImage);
+        try {
+            await dispatch(updateCropLogs(formData));
+            dispatch(getCropLogs());
+            console.log("Crop Logs data updated successfully.");
+        } catch (e) {
+            console.error("Error updating crop logs data:", e);
+        }
+    }
 
     const handleFieldLogsSearch = async () => {
         try {
@@ -451,8 +480,8 @@ export const Logs = () => {
                         {/*Buttons*/}
                         <div id="button-div-crop-logs">
                             <button type="button" className="btn btn-primary" id="save-crop-logs" onClick={handleCropLogsSave}>Save</button>
-                            <button type="button" className="btn btn-secondary" id="update-crop-logs">Update</button>
-                            <button type="button" className="btn btn-danger" id="delete-crop-logs">Delete</button>
+                            <button type="button" className="btn btn-secondary" id="update-crop-logs" onClick={handleCropLogsUpdate}>Update</button>
+                            <button type="button" className="btn btn-danger" id="delete-crop-logs" onClick={handleCropLogsDelete}>Delete</button>
                             <button type="button" className="btn btn-warning" id="clear-crop-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
