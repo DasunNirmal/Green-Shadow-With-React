@@ -5,7 +5,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
 import FieldLogs from "../models/FieldLogs.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {getFieldLogs, saveFieldLogs, searchFieldLogs} from "../reducers/FieldLogsSlice.ts";
+import {
+    deleteFieldLogs,
+    getFieldLogs,
+    saveFieldLogs,
+    searchFieldLogs,
+    updateFieldLogs
+} from "../reducers/FieldLogsSlice.ts";
 
 export const Logs = () => {
 
@@ -60,7 +66,7 @@ export const Logs = () => {
         }
     };
 
-    const handleSave = async () => {
+    const handleFieldLogsSave = async () => {
         const formData = new FormData();
         formData.append("log_code", fieldLogCode);
         formData.append("details", fieldLogDetails);
@@ -79,7 +85,36 @@ export const Logs = () => {
         }
     };
 
-    const handleFieldLogSearch = async () => {
+    const handleFieldLogsDelete = async () => {
+        try {
+            await dispatch(deleteFieldLogs(fieldLogCode));
+            dispatch(getFieldLogs());
+            handleClear();
+            console.log("Field Logs data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting field logs data:", e);
+        }
+    };
+
+    const handleFieldLogsUpdate = async () => {
+        const formData = new FormData();
+        formData.append("log_code", fieldLogCode);
+        formData.append("details", fieldLogDetails);
+        formData.append("log_date", fieldLogDate);
+        formData.append("field_location", fieldLocation);
+        formData.append("field_name", fieldName);
+        formData.append("field_code", fieldCode);
+        if (fieldLogImage) formData.append("img", fieldLogImage);
+        try {
+            await dispatch(updateFieldLogs(formData));
+            dispatch(getFieldLogs());
+            console.log("Field Logs data updated successfully.");
+        } catch (e) {
+            console.error("Error updating field logs data:", e);
+        }
+    };
+
+    const handleFieldLogsSearch = async () => {
         try {
             const fetchedFields = await dispatch(searchFieldLogs(SearchedFieldLog));
             if (fetchedFields.payload) {
@@ -209,9 +244,9 @@ export const Logs = () => {
 
                         {/*Buttons*/}
                         <div id="button-div-field-logs">
-                            <button type="button" className="btn btn-primary" id="save-field-logs" onClick={handleSave}>Save</button>
-                            <button type="button" className="btn btn-secondary" id="update-field-logs">Update</button>
-                            <button type="button" className="btn btn-danger" id="delete-field-logs">Delete</button>
+                            <button type="button" className="btn btn-primary" id="save-field-logs" onClick={handleFieldLogsSave}>Save</button>
+                            <button type="button" className="btn btn-secondary" id="update-field-logs" onClick={handleFieldLogsUpdate}>Update</button>
+                            <button type="button" className="btn btn-danger" id="delete-field-logs" onClick={handleFieldLogsDelete}>Delete</button>
                             <button type="button" className="btn btn-warning" id="clear-field-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
@@ -226,7 +261,7 @@ export const Logs = () => {
                         value={SearchedFieldLog}
                         onChange={(e) => setSearchedFieldLog(e.target.value)}/>
                         {/*Search Button*/}
-                        <button id="search-field-logs" type="button" className="btn btn-primary" onClick={handleFieldLogSearch}>Search</button>
+                        <button id="search-field-logs" type="button" className="btn btn-primary" onClick={handleFieldLogsSearch}>Search</button>
                     </div>
 
                     {/*Table*/}
