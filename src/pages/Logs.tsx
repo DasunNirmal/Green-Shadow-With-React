@@ -12,11 +12,15 @@ import {
     searchFieldLogs,
     updateFieldLogs
 } from "../reducers/FieldLogsSlice.ts";
+import CropLogs from "../models/CropLogs.ts";
+import {searchCrops} from "../reducers/CropsSlice.ts";
+import {getCropLogs, saveCropLogs, searchCropLogs} from "../reducers/CropLogsSlice.ts";
 
 export const Logs = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const fieldLogs = useSelector((state: { fieldLogs: FieldLogs[]}) => state.fieldLogs);
+    const cropLogs = useSelector((state: { cropLogs: CropLogs[]}) => state.cropLogs);
 
     const [selectedLog, setSelectedLog] = useState('field');
     const [fieldLogCode, setFieldLogCode] = useState('');
@@ -28,7 +32,16 @@ export const Logs = () => {
     const [fieldCode, setFieldCode] = useState('');
     const inputRefForFieldImg = useRef<HTMLInputElement>(null);
 
+    const [cropLogCode, setCropLogCode] = useState('');
+    const [cropLogDetails, setCropLogDetails] = useState('');
+    const [cropLogImage, setCropLogImage] = useState<File | undefined>();
+    const [cropLogDate, setCropLogDate] = useState('');
+    const [cropName, setCropName] = useState('');
+    const [cropCode, setCropCode] = useState('');
+    const inputRefForCropImg = useRef<HTMLInputElement>(null);
+
     const [SearchedCrop, setSearchedCrop] = useState('');
+    const [SearchedCropLog, setSearchedCropLog] = useState('');
     const [SearchedField, setSearchedField] = useState('');
     const [SearchedFieldLog, setSearchedFieldLog] = useState('');
 
@@ -37,6 +50,11 @@ export const Logs = () => {
             dispatch(getFieldLogs());
     }, [dispatch, fieldLogs.length]);
 
+    useEffect(() => {
+        if (cropLogs.length === 0)
+            dispatch(getCropLogs());
+    }, [dispatch, cropLogs.length]);
+
     const handleClear = async () => {
         setFieldLogCode('');
         setFieldLogDetails('');
@@ -44,6 +62,16 @@ export const Logs = () => {
         setFieldLocation('');
         setFieldName('');
         setFieldCode('');
+        setCropCode('');
+        setCropName('');
+        setCropLogCode('');
+        setCropLogDetails('');
+        setCropLogDate('');
+        setSearchedCrop('');
+        setSearchedCropLog('');
+        setSearchedField('');
+        setSearchedFieldLog('');
+        if (inputRefForCropImg.current != null) inputRefForCropImg.current.value = '';
         if (inputRefForFieldImg.current != null) inputRefForFieldImg.current.value = '';
     };
 
@@ -66,6 +94,21 @@ export const Logs = () => {
         }
     };
 
+    const handleCropSearch = async () => {
+        try {
+            const fetchedCrops = await dispatch(searchCrops(SearchedCrop));
+            if (fetchedCrops.payload) {
+                setCropCode(fetchedCrops.payload.crop_code);
+                setCropName(fetchedCrops.payload.common_name);
+                setSearchedCrop('');
+            } else {
+                console.warn("No crop data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching crops data:", e);
+        }
+    };
+
     const handleFieldLogsSave = async () => {
         const formData = new FormData();
         formData.append("log_code", fieldLogCode);
@@ -82,6 +125,24 @@ export const Logs = () => {
             console.log("Field Logs data saved successfully.");
         } catch (e) {
             console.error("Error saving field logs data:", e);
+        }
+    };
+
+    const handleCropLogsSave = async () => {
+        const formData = new FormData();
+        formData.append("log_code", cropLogCode);
+        formData.append("details", cropLogDetails);
+        formData.append("log_date", cropLogDate);
+        formData.append("crop_name", cropName);
+        formData.append("crop_code", cropCode);
+        if (cropLogImage) formData.append("img", cropLogImage);
+        try {
+            await dispatch(saveCropLogs(formData));
+            dispatch(getCropLogs());
+            handleClear();
+            console.log("Crop Logs data saved successfully.");
+        } catch (e) {
+            console.error("Error saving crop logs data:", e);
         }
     };
 
@@ -130,6 +191,24 @@ export const Logs = () => {
             }
         } catch (e) {
             console.error("Error fetching fields data:", e);
+        }
+    };
+
+    const handleCropLogsSearch = async () => {
+        try {
+            const fetchedCrops = await dispatch(searchCropLogs(SearchedCropLog));
+            if (fetchedCrops.payload) {
+                setCropLogCode(fetchedCrops.payload.log_code);
+                setCropLogDetails(fetchedCrops.payload.details);
+                setCropLogDate(fetchedCrops.payload.log_date);
+                setCropName(fetchedCrops.payload.crop_name);
+                setCropCode(fetchedCrops.payload.crop_code);
+                setSearchedCropLog('');
+            } else {
+                console.warn("No crop data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching crops data:", e);
         }
     };
 
@@ -302,15 +381,20 @@ export const Logs = () => {
                         <div id="log-code-crop-div">
                             <label id="lblLogCodeCrop" htmlFor="txtLogCode">Log Code :</label>
                             <input id="txtLogCodeCrop" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={cropLogCode}
+                                   onChange={(e) => setCropLogCode(e.target.value)}/>
                         </div>
 
                         {/*Search Crops*/}
                         <div id="search-crops-logs-div">
                             <label id="lblSearchCropsLogs" htmlFor="txtSearchCropsLogs">Search Crops :</label>
                             <input id="txtSearchCropsLogs" className="form-control" type="text"
-                                   placeholder="Enter crop code or name" aria-label="default input example"/>
-                            <button id="btnSearchCropsLogs" type="button" className="btn btn-primary">Search
+                                   placeholder="Enter crop code or name"
+                                   aria-label="default input example"
+                                   value={SearchedCrop}
+                                   onChange={(e) => setSearchedCrop(e.target.value)}/>
+                            <button id="btnSearchCropsLogs" type="button" className="btn btn-primary" onClick={handleCropSearch}>Search
                             </button>
                         </div>
 
@@ -318,21 +402,27 @@ export const Logs = () => {
                         <div id="crop-code-logs-div">
                             <label id="lblCropCodeLogs" htmlFor="txtCropCode">Crop Code :</label>
                             <input id="txtCropCodeLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={cropCode}
+                                   onChange={(e) => setCropCode(e.target.value)}/>
                         </div>
 
                         {/*Crop Name*/}
                         <div id="crop-name-logs-div">
                             <label id="lblCropNameLogs" htmlFor="txtCropNameLogs">Crop Name :</label>
                             <input id="txtCropNameLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={cropName}
+                                   onChange={(e) => setCropName(e.target.value)}/>
                         </div>
 
                         {/*Date*/}
                         <div id="log-date-crop-div">
                             <label id="lblLogDateCrop" htmlFor="txtLogDate">Date :</label>
                             <input id="txtLogDateCrop" className="form-control" type="date"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={cropLogDate}
+                                   onChange={(e) => setCropLogDate(e.target.value)}/>
                         </div>
 
                         {/*Details*/}
@@ -340,23 +430,30 @@ export const Logs = () => {
                             <label id="lblCropDetails" htmlFor="txtCropDetails">Details :</label>
                             <textarea id="txtCropDetails" className="form-control" rows={3}
                                       placeholder="Enter details here"
-                                      aria-label="default input example"></textarea>
+                                      aria-label="default input example"
+                                      value={cropLogDetails}
+                                      onChange={(e) => setCropLogDetails(e.target.value)}></textarea>
                         </div>
 
                         {/*Image*/}
                         <div id="log-image-crop-div">
                             <label id="lblLogImageCrop" htmlFor="txtLogImageCrop">Image :</label>
                             <input id="txtLogImageCrop" className="form-control" type="file"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   ref={inputRefForCropImg}
+                                   onChange={(e) => {
+                                    const input = e.target as HTMLInputElement;
+                                    if (input.files)
+                                    setCropLogImage(e.target.files?.[0])
+                                   }}/>
                         </div>
 
                         {/*Buttons*/}
                         <div id="button-div-crop-logs">
-                            <button type="button" className="btn btn-primary" id="save-crop-logs">Save</button>
-                            <button type="button" className="btn btn-secondary" id="update-crop-logs">Update
-                            </button>
+                            <button type="button" className="btn btn-primary" id="save-crop-logs" onClick={handleCropLogsSave}>Save</button>
+                            <button type="button" className="btn btn-secondary" id="update-crop-logs">Update</button>
                             <button type="button" className="btn btn-danger" id="delete-crop-logs">Delete</button>
-                            <button type="button" className="btn btn-warning" id="clear-crop-logs">Clear</button>
+                            <button type="button" className="btn btn-warning" id="clear-crop-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
 
@@ -365,9 +462,12 @@ export const Logs = () => {
                         {/*Label for Search*/}
                         <label id="lblSearchCropLogs" htmlFor="txtSearch-crop-logs">Search Crops :</label>
                         <input id="txtSearch-crop-logs" className="form-control" type="text"
-                               placeholder="log code or crop name" aria-label="default input example"/>
+                               placeholder="log code or crop name"
+                               aria-label="default input example"
+                               value={SearchedCropLog}
+                               onChange={(e) => setSearchedCropLog(e.target.value)}/>
                         {/*Search Button*/}
-                        <button id="search-crop-logs" type="button" className="btn btn-primary">Search</button>
+                        <button id="search-crop-logs" type="button" className="btn btn-primary" onClick={handleCropLogsSearch}>Search</button>
                     </div>
 
                     {/*Table*/}
@@ -385,8 +485,16 @@ export const Logs = () => {
                             </tr>
                             </thead>
                             <tbody id="crop-logs-table-tb">
-                            <tr>
-                            </tr>
+                            {cropLogs.map((cropLog, index) => (
+                                <tr key={index}>
+                                    <td>{cropLog.log_code}</td>
+                                    <td>{cropLog.crop_code}</td>
+                                    <td>{cropLog.crop_name}</td>
+                                    <td>{cropLog.details}</td>
+                                    <td>{cropLog.log_date}</td>
+                                    <td><img src={`data:image/png;base64,${cropLog.img}`} width="140"/></td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
