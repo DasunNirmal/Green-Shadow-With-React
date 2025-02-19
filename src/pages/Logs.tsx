@@ -15,12 +15,22 @@ import {
 import CropLogs from "../models/CropLogs.ts";
 import {searchCrops} from "../reducers/CropsSlice.ts";
 import {deleteCropLogs, getCropLogs, saveCropLogs, searchCropLogs, updateCropLogs} from "../reducers/CropLogsSlice.ts";
+import StaffLogs from "../models/StaffLogs.ts";
+import {
+    deleteStaffLogs,
+    getStaffLogs,
+    saveStaffLogs,
+    searchStaffLogs,
+    updateStaffLogs
+} from "../reducers/StaffLogsSlice.ts";
+import {searchStaffs} from "../reducers/StaffsSlice.ts";
 
 export const Logs = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const fieldLogs = useSelector((state: { fieldLogs: FieldLogs[]}) => state.fieldLogs);
     const cropLogs = useSelector((state: { cropLogs: CropLogs[]}) => state.cropLogs);
+    const staffLogs = useSelector((state: { staffLogs: StaffLogs[]}) => state.staffLogs);
 
     const [selectedLog, setSelectedLog] = useState('field');
     const [fieldLogCode, setFieldLogCode] = useState('');
@@ -40,8 +50,19 @@ export const Logs = () => {
     const [cropCode, setCropCode] = useState('');
     const inputRefForCropImg = useRef<HTMLInputElement>(null);
 
+    const [staffLogCode, setStaffLogCode] = useState('');
+    const [staffLogDetails, setStaffLogDetails] = useState('');
+    const [staffLogImage, setStaffLogImage] = useState<File | undefined>();
+    const [staffLogDate, setStaffLogDate] = useState('');
+    const [staffName, setStaffName] = useState('');
+    const [staffPhoneNumber, setStaffPhoneNumber] = useState('');
+    const [staffID, setStaffID] = useState('');
+    const inputRefForStaffImg = useRef<HTMLInputElement>(null);
+
     const [SearchedCrop, setSearchedCrop] = useState('');
     const [SearchedCropLog, setSearchedCropLog] = useState('');
+    const [SearchedStaff, setSearchedStaff] = useState('');
+    const [SearchedStaffLog, setSearchedStaffLog] = useState('');
     const [SearchedField, setSearchedField] = useState('');
     const [SearchedFieldLog, setSearchedFieldLog] = useState('');
 
@@ -54,6 +75,11 @@ export const Logs = () => {
         if (cropLogs.length === 0)
             dispatch(getCropLogs());
     }, [dispatch, cropLogs.length]);
+
+    useEffect(() => {
+        if (staffLogs.length === 0)
+            dispatch(getStaffLogs());
+    }, [dispatch, staffLogs.length]);
 
     const handleClear = async () => {
         setFieldLogCode('');
@@ -71,6 +97,16 @@ export const Logs = () => {
         setSearchedCropLog('');
         setSearchedField('');
         setSearchedFieldLog('');
+        setStaffLogCode('');
+        setStaffLogDetails('');
+        setStaffLogDate('');
+        setStaffName('');
+        setStaffPhoneNumber('');
+        setStaffID('');
+        setSearchedStaff('');
+        setSearchedStaffLog('');
+
+        if (inputRefForStaffImg.current != null) inputRefForStaffImg.current.value = '';
         if (inputRefForCropImg.current != null) inputRefForCropImg.current.value = '';
         if (inputRefForFieldImg.current != null) inputRefForFieldImg.current.value = '';
     };
@@ -106,6 +142,22 @@ export const Logs = () => {
             }
         } catch (e) {
             console.error("Error fetching crops data:", e);
+        }
+    };
+
+    const handleStaffSearch = async () => {
+        try {
+            const fetchedStaffs = await dispatch(searchStaffs(SearchedStaff));
+            if (fetchedStaffs.payload) {
+                setStaffID(fetchedStaffs.payload.staff_id);
+                setStaffName(fetchedStaffs.payload.first_name);
+                setStaffPhoneNumber(fetchedStaffs.payload.phone_no);
+                setSearchedStaff('');
+            } else {
+                console.warn("No staff data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching staff data:", e);
         }
     };
 
@@ -146,6 +198,25 @@ export const Logs = () => {
         }
     };
 
+    const handleStaffLogsSave = async () => {
+        const formData = new FormData();
+        formData.append("log_code", staffLogCode);
+        formData.append("details", staffLogDetails);
+        formData.append("log_date", staffLogDate);
+        formData.append("first_name", staffName);
+        formData.append("staff_id", staffID);
+        formData.append("phone_no", staffPhoneNumber);
+        if (staffLogImage) formData.append("img", staffLogImage);
+        try {
+            await dispatch(saveStaffLogs(formData));
+            dispatch(getStaffLogs());
+            handleClear();
+            console.log("Staff Logs data saved successfully.");
+        } catch (e) {
+            console.error("Error saving staff logs data:", e);
+        }
+    };
+
     const handleFieldLogsDelete = async () => {
         try {
             await dispatch(deleteFieldLogs(fieldLogCode));
@@ -165,6 +236,17 @@ export const Logs = () => {
             console.log("Crop Logs data deleted successfully.");
         } catch (e) {
             console.error("Error deleting crop logs data:", e);
+        }
+    };
+
+    const handleStaffLogsDelete = async () => {
+        try {
+            await dispatch(deleteStaffLogs(staffLogCode));
+            dispatch(getStaffLogs());
+            handleClear();
+            console.log("Staff Logs data deleted successfully.");
+        } catch (e) {
+            console.error("Error deleting staff logs data:", e);
         }
     };
 
@@ -201,6 +283,25 @@ export const Logs = () => {
             console.log("Crop Logs data updated successfully.");
         } catch (e) {
             console.error("Error updating crop logs data:", e);
+        }
+    };
+
+    const handleStaffLogsUpdate = async () => {
+        const formData = new FormData();
+        formData.append("log_code", staffLogCode);
+        formData.append("details", staffLogDetails);
+        formData.append("log_date", staffLogDate);
+        formData.append("first_name", staffName);
+        formData.append("staff_id", staffID);
+        formData.append("phone_no", staffPhoneNumber);
+        if (staffLogImage) formData.append("img", staffLogImage);
+        try {
+            await dispatch(updateStaffLogs(formData));
+            dispatch(getStaffLogs());
+            handleClear();
+            console.log("Staff Logs data updated successfully.");
+        } catch (e) {
+            console.error("Error updating staff logs data:", e);
         }
     }
 
@@ -240,6 +341,25 @@ export const Logs = () => {
             console.error("Error fetching crops data:", e);
         }
     };
+
+    const handleStaffLogsSearch = async () => {
+        try {
+            const fetchedStaffs = await dispatch(searchStaffLogs(SearchedStaffLog));
+            if (fetchedStaffs.payload) {
+                setStaffLogCode(fetchedStaffs.payload.log_code);
+                setStaffLogDetails(fetchedStaffs.payload.details);
+                setStaffLogDate(fetchedStaffs.payload.log_date);
+                setStaffName(fetchedStaffs.payload.first_name);
+                setStaffID(fetchedStaffs.payload.staff_id);
+                setStaffPhoneNumber(fetchedStaffs.payload.phone_no);
+                setSearchedStaffLog('');
+            } else {
+                console.warn("No staff data found.");
+            }
+        } catch (e) {
+            console.error("Error fetching staffs data:", e);
+        }
+    }
 
     return (
         <div>
@@ -535,37 +655,47 @@ export const Logs = () => {
                         <div id="log-code-staff-div">
                             <label id="lblLogCodeStaff" htmlFor="txtLogCodeStaff">Log Code :</label>
                             <input id="txtLogCodeStaff" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={staffLogCode}
+                                   onChange={(e) => setStaffLogCode(e.target.value)}/>
                         </div>
 
                         {/*Search Members*/}
                         <div id="search-members-logs-div">
                             <label id="lblSearchMembersLogs" htmlFor="txtSearchMembersLogs">Search Members :</label>
                             <input id="txtSearchMembersLogs" className="form-control" type="text"
-                                   placeholder="Enter member ID or name" aria-label="default input example"/>
-                            <button id="btnSearchMembersLogs" type="button" className="btn btn-primary">Search
-                            </button>
+                                   placeholder="Enter member ID or name"
+                                   aria-label="default input example"
+                                   value={SearchedStaff}
+                                   onChange={(e) => setSearchedStaff(e.target.value)}/>
+                            <button id="btnSearchMembersLogs" type="button" className="btn btn-primary" onClick={handleStaffSearch}>Search</button>
                         </div>
 
                         {/*Member ID*/}
                         <div id="member-id-logs-div">
                             <label id="lblMemberIDLogs" htmlFor="txtMemberIDLogs">Member ID :</label>
                             <input id="txtMemberIDLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={staffID}
+                                   onChange={(e) => setStaffID(e.target.value)}/>
                         </div>
 
                         {/*First Name*/}
                         <div id="first-name-logs-div">
                             <label id="lblFirstNameLogs" htmlFor="txtFirstNameLogs">First Name :</label>
                             <input id="txtFirstNameLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={staffName}
+                                   onChange={(e) => setStaffName(e.target.value)}/>
                         </div>
 
                         {/*Phone Number*/}
                         <div id="phone-number-logs-div">
                             <label id="lblPhoneNumberLogs" htmlFor="txtPhoneNumberLogs">Phone Number :</label>
                             <input id="txtPhoneNumberLogs" className="form-control" type="text"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={staffPhoneNumber}
+                                   onChange={(e) => setStaffPhoneNumber(e.target.value)}/>
                         </div>
 
                         {/*Details*/}
@@ -573,30 +703,39 @@ export const Logs = () => {
                             <label id="lblStaffDetails" htmlFor="txtStaffDetails">Details :</label>
                             <textarea id="txtStaffDetails" className="form-control" rows={3}
                                       placeholder="Enter details here"
-                                      aria-label="default input example"></textarea>
+                                      aria-label="default input example"
+                                      value={staffLogDetails}
+                                      onChange={(e) => setStaffLogDetails(e.target.value)}></textarea>
                         </div>
 
                         {/*Date*/}
                         <div id="log-date-staff-div">
                             <label id="lblLogDateStaff" htmlFor="txtLogDateStaff">Date :</label>
                             <input id="txtLogDateStaff" className="form-control" type="date"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   value={staffLogDate}
+                                   onChange={(e) => setStaffLogDate(e.target.value)}/>
                         </div>
 
                         {/*Image*/}
                         <div id="log-image-staff-div">
                             <label id="lblLogImageStaff" htmlFor="txtLogImageStaff">Image :</label>
                             <input id="txtLogImageStaff" className="form-control" type="file"
-                                   aria-label="default input example"/>
+                                   aria-label="default input example"
+                                   ref={inputRefForStaffImg}
+                                   onChange={(e) => {
+                                    const input = e.target as HTMLInputElement;
+                                    if (input.files)
+                                    setStaffLogImage(e.target.files?.[0])
+                                   }}/>
                         </div>
 
                         {/*Buttons*/}
                         <div id="button-div-staff-logs">
-                            <button type="button" className="btn btn-primary" id="save-staff-logs">Save</button>
-                            <button type="button" className="btn btn-secondary" id="update-staff-logs">Update
-                            </button>
-                            <button type="button" className="btn btn-danger" id="delete-staff-logs">Delete</button>
-                            <button type="button" className="btn btn-warning" id="clear-staff-logs">Clear</button>
+                            <button type="button" className="btn btn-primary" id="save-staff-logs" onClick={handleStaffLogsSave}>Save</button>
+                            <button type="button" className="btn btn-secondary" id="update-staff-logs" onClick={handleStaffLogsUpdate}>Update</button>
+                            <button type="button" className="btn btn-danger" id="delete-staff-logs" onClick={handleStaffLogsDelete}>Delete</button>
+                            <button type="button" className="btn btn-warning" id="clear-staff-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
 
@@ -605,9 +744,12 @@ export const Logs = () => {
                         {/*Label for Search*/}
                         <label id="lblSearchStaffLogs" htmlFor="txtSearch-staff-logs">Search Members :</label>
                         <input id="txtSearch-staff-logs" className="form-control" type="text"
-                               placeholder="Log code or member name" aria-label="default input example"/>
+                               placeholder="Log code or member name"
+                               aria-label="default input example"
+                               value={SearchedStaffLog}
+                               onChange={(e) => setSearchedStaffLog(e.target.value)}/>
                         {/*Search Button*/}
-                        <button id="search-staff-logs" type="button" className="btn btn-primary">Search</button>
+                        <button id="search-staff-logs" type="button" className="btn btn-primary" onClick={handleStaffLogsSearch}>Search</button>
                     </div>
 
                     {/*Table*/}
@@ -626,8 +768,17 @@ export const Logs = () => {
                             </tr>
                             </thead>
                             <tbody id="staff-logs-table-tb">
-                            <tr>
-                            </tr>
+                            {staffLogs.map((staffLog, index) => (
+                                <tr key={index}>
+                                    <td>{staffLog.log_code}</td>
+                                    <td>{staffLog.staff_id}</td>
+                                    <td>{staffLog.first_name}</td>
+                                    <td>{staffLog.phone_no}</td>
+                                    <td>{staffLog.details}</td>
+                                    <td>{staffLog.log_date}</td>
+                                    <td><img src={`data:image/png;base64,${staffLog.img}`} width="140"/></td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
