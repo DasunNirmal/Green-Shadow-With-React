@@ -11,8 +11,13 @@ const api = axios.create({
 export const saveVehicles = createAsyncThunk(
     'vehicles/saveVehicles',
     async (vehicles: Vehicles) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.post('/add', vehicles);
+            const response = await api.post('/add', vehicles, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -23,8 +28,13 @@ export const saveVehicles = createAsyncThunk(
 export const deleteVehicles = createAsyncThunk(
     'vehicles/deleteVehicles',
     async (vehicle_code: string) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.delete(`/delete/${vehicle_code}`);
+            const response = await api.delete(`/delete/${vehicle_code}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -35,8 +45,13 @@ export const deleteVehicles = createAsyncThunk(
 export const updateVehicles = createAsyncThunk(
     'vehicles/updateVehicles',
     async (vehicles: Vehicles) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.put(`/update/${vehicles.vehicle_code}`, vehicles);
+            const response = await api.put(`/update/${vehicles.vehicle_code}`, vehicles, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -47,8 +62,13 @@ export const updateVehicles = createAsyncThunk(
 export const getVehicles = createAsyncThunk(
     'vehicles/getVehicles',
     async () => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.get('/get');
+            const response = await api.get('/get', {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -59,8 +79,13 @@ export const getVehicles = createAsyncThunk(
 export const searchVehicles = createAsyncThunk(
     'vehicles/searchVehicles',
     async (searchTerm: string) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.get(`/search/${searchTerm}`);
+            const response = await api.get(`/search/${searchTerm}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
