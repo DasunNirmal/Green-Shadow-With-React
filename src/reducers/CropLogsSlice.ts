@@ -11,10 +11,12 @@ const api = axios.create({
 export const saveCropLogs = createAsyncThunk(
     'cropLogs/saveCropLogs',
     async (cropLogs: FormData) => {
+        const token = localStorage.getItem('jwt_token');
         try {
             const response = await api.post('/add', cropLogs, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    Authorization: token ? `Bearer ${token}` : "",
                 },
             });
             return response.data;
@@ -27,8 +29,13 @@ export const saveCropLogs = createAsyncThunk(
 export const deleteCropLogs = createAsyncThunk(
     'cropLogs/deleteCropLogs',
     async (log_code: string) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.delete(`/delete/${log_code}`);
+            const response = await api.delete(`/delete/${log_code}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -39,8 +46,13 @@ export const deleteCropLogs = createAsyncThunk(
 export const updateCropLogs = createAsyncThunk(
     'cropLogs/updateCropLogs',
     async (cropLogs: FormData) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.put(`/update/${cropLogs.get('log_code')}`, cropLogs);
+            const response = await api.put(`/update/${cropLogs.get('log_code')}`, cropLogs, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -51,8 +63,13 @@ export const updateCropLogs = createAsyncThunk(
 export const getCropLogs = createAsyncThunk(
     'cropLogs/getCropLogs',
     async () => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.get('/get');
+            const response = await api.get('/get', {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -63,8 +80,13 @@ export const getCropLogs = createAsyncThunk(
 export const searchCropLogs = createAsyncThunk(
     'cropLogs/searchCropLogs',
     async (searchTerm: string) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.get(`/search/${searchTerm}`);
+            const response = await api.get(`/search/${searchTerm}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
