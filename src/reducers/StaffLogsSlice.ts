@@ -11,10 +11,12 @@ const api = axios.create({
 export const saveStaffLogs = createAsyncThunk(
     'staffLogs/saveStaffLogs',
     async (staffLogs: FormData) => {
+        const token = localStorage.getItem('jwt_token');
         try {
             const response = await api.post('/add', staffLogs, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    Authorization: token ? `Bearer ${token}` : "",
                 },
             });
             return response.data;
@@ -27,8 +29,13 @@ export const saveStaffLogs = createAsyncThunk(
 export const deleteStaffLogs = createAsyncThunk(
     'staffLogs/deleteStaffLogs',
     async (log_code: string) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.delete(`/delete/${log_code}`);
+            const response = await api.delete(`/delete/${log_code}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -39,8 +46,13 @@ export const deleteStaffLogs = createAsyncThunk(
 export const updateStaffLogs = createAsyncThunk(
     'staffLogs/updateStaffLogs',
     async (staffLogs: FormData) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.put(`/update/${staffLogs.get('log_code')}`, staffLogs);
+            const response = await api.put(`/update/${staffLogs.get('log_code')}`, staffLogs, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -51,8 +63,13 @@ export const updateStaffLogs = createAsyncThunk(
 export const getStaffLogs = createAsyncThunk(
     'staffLogs/getStaffLogs',
     async () => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.get('/get');
+            const response = await api.get('/get', {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
@@ -63,8 +80,13 @@ export const getStaffLogs = createAsyncThunk(
 export const searchStaffLogs = createAsyncThunk(
     'staffLogs/searchStaffLogs',
     async (searchTerm: string) => {
+        const token = localStorage.getItem('jwt_token');
         try {
-            const response = await api.get(`/search/${searchTerm}`);
+            const response = await api.get(`/search/${searchTerm}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
             return response.data;
         } catch (error) {
             return console.error(error);
