@@ -1,5 +1,10 @@
 import './SignUp.css'
 import {Link} from "react-router";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../store/Store.ts";
+import {useState} from "react";
+import User from "../models/User.ts";
+import {registerUser} from "../reducers/UserSlice.ts";
 
 export const SignUp = () => {
 
@@ -38,6 +43,20 @@ export const SignUp = () => {
         }
         if (passwordLogo) {
             passwordLogo.classList.remove('focused');
+        }
+    };
+
+    const dispatch = useDispatch<AppDispatch>();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('MANAGER');
+
+    const handleRegister = async () => {
+        const user: User = {email: email, password: password, role: role};
+        try {
+            await dispatch(registerUser(user));
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -1364,13 +1383,18 @@ export const SignUp = () => {
                     </div>
 
                     <div className="form-floating mb-3" id="email-reg">
-                        <input type="email" className="form-control" id="email-input-reg" placeholder="" onFocus={() => changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}/>
+                        <input type="email" className="form-control" id="email-input-reg"
+                               placeholder="" onFocus={() =>
+                            changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}
+                        onChange={(e) => setEmail(e.target.value)}/>
                         <label htmlFor="email-input-reg" id="email-label-reg">Email address</label>
                     </div>
 
                     <div className="form-floating" id="password-reg">
                         <input type="password" className="form-control" id="password-input-reg"
-                               placeholder="Enter your password" onFocus={() => changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}/>
+                               placeholder="Enter your password" onFocus={() =>
+                            changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}
+                        onChange={(e) => setPassword(e.target.value)}/>
                         <label htmlFor="password-input-reg" id="password-label-reg">Password</label>
                     </div>
 
@@ -1381,7 +1405,8 @@ export const SignUp = () => {
 
                     <div id="role-reg">
                         <div className="form-floating">
-                            <select className="form-select" id="role-input-reg" required>
+                            <select className="form-select" id="role-input-reg" required
+                                    onChange={(e) => setRole(e.target.value)}>
                                 <option>MANAGER</option>
                                 <option>ADMINISTRATIVE</option>
                                 <option>SCIENTIST</option>
@@ -1391,7 +1416,7 @@ export const SignUp = () => {
                     </div>
 
                     <div className="d-grid gap-2 col-6 mx-auto" id="login-button-div-reg">
-                        <button id="login-button-reg" className="btn btn-primary" type="button">Sign Up</button>
+                        <button id="login-button-reg" className="btn btn-primary" type="button" onClick={handleRegister}>Sign Up</button>
                     </div>
                 </div>
             </section>
