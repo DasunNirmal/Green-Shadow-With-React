@@ -1,5 +1,9 @@
 import './SignIn.css'
 import {Link, useNavigate} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../store/Store.ts";
+import {useEffect, useState} from "react";
+import {loginUser} from "../reducers/UserSlice.ts";
 
 export const SignIn = () => {
 
@@ -30,6 +34,27 @@ export const SignIn = () => {
             passwordLogo.classList.remove('focused');
         }
     };
+
+    const dispatch = useDispatch<AppDispatch>();
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async () => {
+        const user = {email: email, password: password};
+        try {
+            await dispatch(loginUser(user)).unwrap(); // Unwrap the asyncThunk result
+            console.log("Stored Token:", localStorage.getItem('jwt_token')); // Verify token is stored
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/home');
+        }
+    }, [isAuthenticated]);
 
     return (
         <div>
@@ -336,12 +361,16 @@ export const SignIn = () => {
                     </div>
 
                     <div className="form-floating mb-3" id="email">
-                        <input type="email" className="form-control" id="email-input" placeholder="" onFocus={() => changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}/>
+                        <input type="email" className="form-control" id="email-input" placeholder=""
+                               onFocus={() => changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}
+                        onChange={(e) => setEmail(e.target.value)}/>
                         <label htmlFor="email-input" id="email-label">Email address</label>
                     </div>
 
                     <div className="form-floating" id="password">
-                        <input type="password" className="form-control" id="password-input" placeholder="Password" onFocus={() => changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}/>
+                        <input type="password" className="form-control" id="password-input" placeholder="Password"
+                               onFocus={() => changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}
+                        onChange={(e) => setPassword(e.target.value)}/>
                         <label htmlFor="password-input" id="password-label">Password</label>
                     </div>
                     <div id="show-password">
@@ -349,7 +378,7 @@ export const SignIn = () => {
                         <label htmlFor="check-box-login">Show Password</label>
                     </div>
                     <div className="d-grid gap-2 col-6 mx-auto" id="login-button-div">
-                        <button id="login-button" className="btn btn-primary" type="button" onClick={() => navigate('/home')}>Sign
+                        <button id="login-button" className="btn btn-primary" type="button" onClick={handleLogin}>Sign
                             In</button>
                     </div>
 
