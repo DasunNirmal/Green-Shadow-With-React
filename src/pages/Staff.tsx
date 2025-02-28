@@ -31,6 +31,7 @@ export const Staff = () => {
     const [fieldName, setFieldName] = useState('');
     const [SearchedField, setSearchedField] = useState('');
     const [SearchedStaff, setSearchedStaff] = useState('');
+    const dateAdded = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         if (staffs.length === 0)
@@ -76,7 +77,7 @@ export const Staff = () => {
 
     const handleSave = async () => {
       const staffObj = new Staffs(staffID, address01, address02, address03, address04, address05, designation, dob, email, firstName, gender, joinedDate, lastName, phoneNumber,
-          role, fieldCode);
+          role, fieldCode, dateAdded);
 
       try {
           await dispatch(saveStaffs(staffObj));
@@ -101,7 +102,7 @@ export const Staff = () => {
 
     const handleUpdate = async () => {
         const staffObj = new Staffs(staffID, address01, address02, address03, address04, address05, designation, dob, email, firstName, gender, joinedDate, lastName, phoneNumber,
-            role, fieldCode);
+            role, fieldCode, dateAdded);
         try {
             await dispatch(updateStaffs(staffObj));
             dispatch(getStaffs());
