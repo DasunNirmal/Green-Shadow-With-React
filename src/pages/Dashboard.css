@@ -15,12 +15,34 @@ body.color-dashboard {
 
 #container {
     position: absolute;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 60px;
+    display: grid;
+    gap: 90px;
     justify-content: space-evenly;
     padding: 20px;
-    bottom: 130px;
+    bottom: 50px;
+    right: 0;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.availability {
+    width: fit-content;
+    font-size: 16px;
+    font-weight: bold;
+    color: #3E3C5C;
+    position: relative;
+    bottom: 81px;
+    left: 340px;
+}
+
+#vehicle-image, #equipment-image {
+    width: 80px;
+    height: 80px;
+    margin-right: auto;
+    margin-top: 20px;
 }
 
 .card {
@@ -28,47 +50,34 @@ body.color-dashboard {
     border: 2px solid #3E3C5C;
     border-radius: 8px;
     padding: 20px;
-    width: 340px;
+    width: 610px;
     height: 200px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card h5 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-}
-
-h5 {
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #3E3C5C;
     margin-bottom: 10px;
 }
-.total {
-    font-size: 16px;
+#dashboard-title {
     font-weight: bold;
-    margin-top: 20px;
     color: #3E3C5C;
 }
-#crop-image,#field-image,#staff-image,#vehicle-image,#equipment-image,#log-image {
-    width: 80px;
-    height: 80px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 20px;
+#chart-title {
+    font-weight: bold;
+    color: #3E3C5C;
 }
-#log-image {
-    width: 65px;
-    height: 65px;
-    margin-top: 35px;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+.total {
+    width: fit-content;
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    bottom: 58px;
+    left: 150px;
+    color: #3E3C5C;
 }
 
-@media (max-width: 768px) {
-    .card {
-        width: 150px;
-    }
-}
