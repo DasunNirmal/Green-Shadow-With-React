@@ -20,6 +20,7 @@ export const Field = () => {
     const [SearchedField, setSearchedField] = useState('');
     const inputRefForImg_01 = useRef<HTMLInputElement>(null);
     const inputRefForImg_02 = useRef<HTMLInputElement>(null);
+    const dateAdded = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         if (fields.length === 0)
@@ -32,6 +33,7 @@ export const Field = () => {
         formData.append("field_name", fieldName);
         formData.append("field_location", fieldLocation);
         formData.append("extent_size", fieldSize);
+        formData.append("date_added", dateAdded);
 
         if (fieldImage_1) formData.append("img_01", fieldImage_1);
         if (fieldImage_2) formData.append("img_02", fieldImage_2);
@@ -61,6 +63,7 @@ export const Field = () => {
         formData.append("field_name", fieldName);
         formData.append("field_location", fieldLocation);
         formData.append("extent_size", fieldSize);
+        formData.append("date_added", dateAdded);
         if (fieldImage_1) formData.append("img_01", fieldImage_1);
         if (fieldImage_2) formData.append("img_02", fieldImage_2);
         try {
