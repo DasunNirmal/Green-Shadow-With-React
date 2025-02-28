@@ -15,9 +15,10 @@ export default class Staffs {
     phone_no!:string;
     role!:string;
     field_code!:string;
+    date_added!: string;
 
 
-    constructor(staff_id: string, address_01: string, address_02: string, address_03: string, address_04: string, address_05: string, designation: string, dob: string, email: string, first_name: string, gender: string, joined_date: string, last_name: string, phone_no: string, role: string, field_code: string) {
+    constructor(staff_id: string, address_01: string, address_02: string, address_03: string, address_04: string, address_05: string, designation: string, dob: string, email: string, first_name: string, gender: string, joined_date: string, last_name: string, phone_no: string, role: string, field_code: string, date_added: string) {
         this.staff_id = staff_id;
         this.address_01 = address_01;
         this.address_02 = address_02;
@@ -34,5 +35,6 @@ export default class Staffs {
         this.phone_no = phone_no;
         this.role = role;
         this.field_code = field_code;
+        this.date_added = date_added;
     }
 }
