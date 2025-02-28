@@ -6,4 +6,5 @@ export default class Crops {
     scientific_name!: string;
     season!: string;
     field_code!: string;
+    date_added!: string;
 }
