@@ -23,6 +23,7 @@ export const Crop = () => {
     const [SearchedCrop, setSearchedCrop] = useState('');
     const [SearchedField, setSearchedField] = useState('');
     const inoutRefImg = useRef<HTMLInputElement>(null);
+    const dateAdded = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         if (crops.length === 0)
@@ -51,6 +52,7 @@ export const Crop = () => {
         formData.append("scientific_name", scientificName);
         formData.append("season", season);
         formData.append("field_code", fieldCode);
+        formData.append("date_added", dateAdded);
         if (cropImage) formData.append("img", cropImage);
         try {
             await dispatch(saveCrops(formData));
@@ -79,6 +81,7 @@ export const Crop = () => {
         formData.append("scientific_name", scientificName);
         formData.append("season", season);
         formData.append("field_code", fieldCode);
+        formData.append("date_added", dateAdded);
         if (cropImage) formData.append("img", cropImage);
         try {
             await dispatch(updateCrops(formData));
