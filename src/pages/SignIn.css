@@ -110,6 +110,12 @@
     font-weight: 600;
     box-shadow: rgba(0, 0, 0, 0.3) 0 19px 38px, rgba(0, 0, 0, 0.22) 0 15px 12px;
 }
+.inValidData{
+    border-bottom: 2px solid red !important;
+}
+.label-color-red {
+    color: red !important;
+}
 #sign-up-div {
     width: fit-content;
     height: fit-content;
