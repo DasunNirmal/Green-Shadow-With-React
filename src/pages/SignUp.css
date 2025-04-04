@@ -12,6 +12,12 @@
     transform: rotate(30deg);
     background-color: rgba(237, 218, 184, 0.95); /* darker - #3E3C5C*/
 }
+.inValidData{
+    border-bottom: 2px solid red !important;
+}
+.label-color-red {
+    color: red !important;
+}
 #registration-form-wrapper {
     width: 30dvw;
     height: 745px;
