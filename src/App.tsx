@@ -13,30 +13,36 @@ import {Logs} from "./pages/Logs.tsx";
 import {Provider, useSelector} from "react-redux";
 import {store} from "./store/Store.ts";
 
+function AppRouter() {
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
+    const routers = createBrowserRouter([
+        {
+            path: '',
+            element: <RootLayout/>,
+            children: [
+                {path: '', element: <SignIn/>},
+                {path: '/signup', element: <SignUp/>},
+                {path: '/home', element: isAuthenticated ? <Dashboard/> : <Navigate to='/'/>},
+                {path: '/field', element: isAuthenticated ? <Field/> : <Navigate to='/'/>},
+                {path: '/crop', element: isAuthenticated ? <Crop/> : <Navigate to='/'/>},
+                {path: '/staff', element: isAuthenticated ? <Staff/> : <Navigate to='/'/>},
+                {path: '/vehicle', element: isAuthenticated ? <Vehicle/> : <Navigate to='/'/>},
+                {path: '/equipment', element: isAuthenticated ? <Equipment/> : <Navigate to='/'/>},
+                {path: '/logs', element: isAuthenticated ? <Logs/> : <Navigate to='/'/>},
+            ]
+        }
+    ]);
+
+    return <RouterProvider router={routers}/>;
+}
+
 function App() {
-
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-
-  const routers =  createBrowserRouter([
-       {path : '',
-           element : <RootLayout/>,
-           children:[
-               {path : '',element : <SignIn/>},
-               {path : '/signup',element : <SignUp/>},
-               {path : '/home',element : isAuthenticated ? <Dashboard/> : <Navigate to=''/>},
-               {path : '/field',element : <Field/>},
-               {path : '/crop',element : <Crop/>},
-               {path : '/staff',element : <Staff/>},
-               {path : '/vehicle',element : <Vehicle/>},
-               {path : '/equipment',element : <Equipment/>},
-               {path : '/logs',element : <Logs/>}
-           ]},
-  ])
 
   return (
       <>
           <Provider store={store}>
-              <RouterProvider router={routers} />
+              <AppRouter/>
           </Provider>
       </>
   )
