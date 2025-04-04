@@ -7,7 +7,47 @@ import {loginUser} from "../reducers/UserSlice.ts";
 
 export const SignIn = () => {
 
+    const dispatch = useDispatch<AppDispatch>();
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [toggle, isToggled] = useState(false);
     const navigate = useNavigate();
+
+    const handleToggle = () => {
+        const passwordInput = document.getElementById('password-input');
+        if (passwordInput) {
+            if (toggle) {
+                passwordInput.setAttribute('type', 'password');
+            } else {
+                passwordInput.setAttribute('type', 'text');
+            }
+        }
+        isToggled(!toggle);
+    };
+
+    const changeStyle = () => {
+        const emailInput = document.getElementById('email-input');
+        const emailLabel = document.getElementById('email-label');
+        const passwordInput = document.getElementById('password-input');
+        const passwordLabel = document.getElementById('password-label');
+
+        if (email.length === 0) {
+            if (emailInput) emailInput.classList.add('inValidData');
+            if (emailLabel) emailLabel.classList.add('label-color-red');
+        } else {
+            if (emailInput) emailInput.classList.remove('inValidData');
+            if (emailLabel) emailLabel.classList.remove('label-color-red');
+        }
+
+        if (password.length === 0) {
+            if (passwordInput) passwordInput.classList.add('inValidData');
+            if (passwordLabel) passwordLabel.classList.add('label-color-red');
+        } else {
+            if (passwordInput) passwordInput.classList.remove('inValidData');
+            if (passwordLabel) passwordLabel.classList.remove('label-color-red');
+        }
+    };
 
     const changeStyleOnFocused = (value:string) => {
         const emailLogo = document.getElementById('email-logo');
@@ -35,18 +75,22 @@ export const SignIn = () => {
         }
     };
 
-    const dispatch = useDispatch<AppDispatch>();
-    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const clearFields = () => {
+        setEmail('');
+        setPassword('');
+    };
 
     const handleLogin = async () => {
+        changeStyle();
         const user = {email: email, password: password};
-        try {
-            await dispatch(loginUser(user)).unwrap(); // Unwrap the asyncThunk result
-            console.log("Stored Token:", localStorage.getItem('jwt_token')); // Verify token is stored
-        } catch (error) {
-            console.error(error);
+        if (email.length > 0 && password.length > 0) {
+            try {
+                await dispatch(loginUser(user)).unwrap(); // Unwrap the asyncThunk result
+                clearFields();
+                console.log("Stored Token:", localStorage.getItem('jwt_token')); // Verify token is stored
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -363,18 +407,18 @@ export const SignIn = () => {
                     <div className="form-floating mb-3" id="email">
                         <input type="email" className="form-control" id="email-input" placeholder=""
                                onFocus={() => changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}
-                        onChange={(e) => setEmail(e.target.value)}/>
+                        onChange={(e) => setEmail(e.target.value)} onInput={changeStyle}/>
                         <label htmlFor="email-input" id="email-label">Email address</label>
                     </div>
 
                     <div className="form-floating" id="password">
                         <input type="password" className="form-control" id="password-input" placeholder="Password"
                                onFocus={() => changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}
-                        onChange={(e) => setPassword(e.target.value)}/>
+                        onChange={(e) => setPassword(e.target.value)} onInput={changeStyle}/>
                         <label htmlFor="password-input" id="password-label">Password</label>
                     </div>
                     <div id="show-password">
-                        <input id="check-box-login" type="checkbox"/>
+                        <input id="check-box-login" type="checkbox" onClick={handleToggle}/>
                         <label htmlFor="check-box-login">Show Password</label>
                     </div>
                     <div className="d-grid gap-2 col-6 mx-auto" id="login-button-div">
