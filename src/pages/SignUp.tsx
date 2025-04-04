@@ -8,6 +8,58 @@ import {registerUser} from "../reducers/UserSlice.ts";
 
 export const SignUp = () => {
 
+    const dispatch = useDispatch<AppDispatch>();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [toggle, isToggled] = useState(false);
+    const [role, setRole] = useState('MANAGER');
+
+    const handleToggle = () => {
+        const passwordInput = document.getElementById('password-input-reg');
+        if (passwordInput) {
+            if (toggle) {
+                passwordInput.setAttribute('type', 'password');
+            } else {
+                passwordInput.setAttribute('type', 'text');
+            }
+        }
+        isToggled(!toggle);
+    };
+
+    const changeStyle = () => {
+        const nameInput = document.getElementById('name-input-reg');
+        const nameLabel = document.getElementById('name-label-reg');
+        const emailInput = document.getElementById('email-input-reg');
+        const emailLabel = document.getElementById('email-label-reg');
+        const passwordInput = document.getElementById('password-input-reg');
+        const passwordLabel = document.getElementById('password-label-reg');
+
+        if (name.length === 0) {
+            if (nameInput) nameInput.classList.add('inValidData');
+            if (nameLabel) nameLabel.classList.add('label-color-red');
+        } else {
+            if (nameInput) nameInput.classList.remove('inValidData');
+            if (nameLabel) nameLabel.classList.remove('label-color-red');
+        }
+
+        if (email.length === 0) {
+            if (emailInput) emailInput.classList.add('inValidData');
+            if (emailLabel) emailLabel.classList.add('label-color-red');
+        } else {
+            if (emailInput) emailInput.classList.remove('inValidData');
+            if (emailLabel) emailLabel.classList.remove('label-color-red');
+        }
+
+        if (password.length === 0) {
+            if (passwordInput) passwordInput.classList.add('inValidData');
+            if (passwordLabel) passwordLabel.classList.add('label-color-red');
+        } else {
+            if (passwordInput) passwordInput.classList.remove('inValidData');
+            if (passwordLabel) passwordLabel.classList.remove('label-color-red');
+        }
+    };
+
     const changeStyleOnFocused = (value:string) => {
         const userLogo = document.getElementById('user-logo-reg');
         const emailLogo = document.getElementById('email-logo-reg');
@@ -46,17 +98,22 @@ export const SignUp = () => {
         }
     };
 
-    const dispatch = useDispatch<AppDispatch>();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('MANAGER');
+    const clearFields = () => {
+        setName('');
+        setEmail('');
+        setPassword('');
+    };
 
     const handleRegister = async () => {
+        changeStyle();
         const user: User = {email: email, password: password, role: role};
-        try {
-            await dispatch(registerUser(user));
-        } catch (error) {
-            console.error(error);
+        if (email.length > 0 && password.length > 0) {
+            try {
+                await dispatch(registerUser(user));
+                clearFields();
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -1378,28 +1435,34 @@ export const SignUp = () => {
                     </div>
 
                     <div className="form-floating mb-3" id="name-reg">
-                        <input type="text" className="form-control" id="name-input-reg" placeholder="" onFocus={() => changeStyleOnFocused('name')} onBlur={changeStyleOnBlur}/>
+                        <input type="text" className="form-control" id="name-input-reg"
+                               value={name}
+                               placeholder="" onFocus={() =>
+                            changeStyleOnFocused('name')} onBlur={changeStyleOnBlur}
+                        onChange={(e) => setName(e.target.value)} onInput={changeStyle}/>
                         <label htmlFor="name-input-reg" id="name-label-reg">Name</label>
                     </div>
 
                     <div className="form-floating mb-3" id="email-reg">
                         <input type="email" className="form-control" id="email-input-reg"
+                               value={email}
                                placeholder="" onFocus={() =>
                             changeStyleOnFocused('email')} onBlur={changeStyleOnBlur}
-                        onChange={(e) => setEmail(e.target.value)}/>
+                        onChange={(e) => setEmail(e.target.value)} onInput={changeStyle}/>
                         <label htmlFor="email-input-reg" id="email-label-reg">Email address</label>
                     </div>
 
                     <div className="form-floating" id="password-reg">
                         <input type="password" className="form-control" id="password-input-reg"
+                               value={password}
                                placeholder="Enter your password" onFocus={() =>
                             changeStyleOnFocused('password')} onBlur={changeStyleOnBlur}
-                        onChange={(e) => setPassword(e.target.value)}/>
+                        onChange={(e) => setPassword(e.target.value)} onInput={changeStyle}/>
                         <label htmlFor="password-input-reg" id="password-label-reg">Password</label>
                     </div>
 
                     <div id="show-password-reg">
-                        <input id="check-box-reg" type="checkbox"/>
+                        <input id="check-box-reg" type="checkbox" onClick={handleToggle}/>
                         <label htmlFor="check-box-reg">Show Password</label>
                     </div>
 
