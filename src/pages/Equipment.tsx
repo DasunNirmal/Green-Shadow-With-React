@@ -6,13 +6,9 @@ import Equipments from "../models/Equipments.ts";
 import {useEffect, useState} from "react";
 import {searchStaffs} from "../reducers/StaffsSlice.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {
-    deleteEquipments,
-    getEquipments,
-    saveEquipments,
-    searchEquipments,
-    updateEquipments
-} from "../reducers/EquipmentSlice.ts";
+import {deleteEquipments, getEquipments, saveEquipments, searchEquipments, updateEquipments} from "../reducers/EquipmentSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Equipment = () => {
 
@@ -94,9 +90,12 @@ export const Equipment = () => {
             await dispatch(saveEquipments(equipmentObj));
             dispatch(getEquipments());
             handleClear();
-            console.log("Equipment data saved successfully.");
+            toast.success("Equipment Data Saved successfully !");
         } catch (e) {
             console.error("Error saving equipment data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Equipment Data !");
+            }
         }
     };
 
@@ -105,9 +104,12 @@ export const Equipment = () => {
             await dispatch(deleteEquipments(equipmentCode));
             dispatch(getEquipments());
             handleClear();
-            console.log("Equipment data deleted successfully.");
+            toast.success("Equipment Data Deleted successfully !");
         } catch (e) {
             console.error("Error deleting equipment data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Equipment Data !");
+            }
         }
     };
 
@@ -117,9 +119,12 @@ export const Equipment = () => {
             await dispatch(updateEquipments(equipmentObj));
             dispatch(getEquipments());
             handleClear();
-            console.log("Equipment data updated successfully.");
+            toast.success("Equipment Data Updated successfully !");
         } catch (e) {
             console.error("Error updating equipment data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Equipment Data !");
+            }
         }
     };
 
@@ -284,7 +289,7 @@ export const Equipment = () => {
                         <button type="button" className="btn btn-warning" id="clear-equipment" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
-
+                <ToastContainer/>
                 {/*Search Section*/}
                 <div id="search-equipment-div">
                     {/*Label for Search*/}
