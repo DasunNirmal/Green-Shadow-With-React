@@ -107,7 +107,7 @@ export const Logs = () => {
 
     const handleFieldSearch = async () => {
         try {
-            const fetchedFields = await dispatch(searchFields(SearchedFieldLog));
+            const fetchedFields = await dispatch(searchFields(SearchedField));
             if (fetchedFields.payload) {
                 setFieldCode(fetchedFields.payload.field_code);
                 setFieldName(fetchedFields.payload.field_name);
