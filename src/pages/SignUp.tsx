@@ -5,6 +5,8 @@ import {AppDispatch} from "../store/Store.ts";
 import {useState} from "react";
 import User from "../models/User.ts";
 import {registerUser} from "../reducers/UserSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const SignUp = () => {
 
@@ -109,10 +111,14 @@ export const SignUp = () => {
         const user: User = {email: email, password: password, role: role};
         if (email.length > 0 && password.length > 0) {
             try {
-                await dispatch(registerUser(user));
+                await dispatch(registerUser(user)).unwrap();
                 clearFields();
+                toast.success("Registration successful !");
             } catch (error) {
                 console.error(error);
+                if (error instanceof Error) {
+                    toast.error("This is a toast notification !");
+                }
             }
         }
     };
@@ -126,6 +132,7 @@ export const SignUp = () => {
                 you on board!</h1>
             <h5 id="welcome-text-2" className="text-02-left animate__animated animate__lightSpeedInLeft">Welcome to
                 Green Shadow !</h5>
+            <ToastContainer/>
             <section id="registration-section">
                 <div id="image-registration" className="animate__animated animate__zoomIn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 500">
