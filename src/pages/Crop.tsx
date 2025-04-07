@@ -6,6 +6,8 @@ import {useEffect, useRef, useState} from "react";
 import Crops from "../models/Crops.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
 import {deleteCrops, getCrops, saveCrops, searchCrops, updateCrops} from "../reducers/CropsSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Crop = () => {
 
@@ -29,6 +31,16 @@ export const Crop = () => {
         if (crops.length === 0)
             dispatch(getCrops());
     },[dispatch,crops.length]);
+
+    const handleClear = async () => {
+        setCropCode('');
+        setCategory('');
+        setCommonName('');
+        setScientificName('');
+        setSeason('');
+        setFieldCode('');
+        if (inoutRefImg.current) inoutRefImg.current.value = '';
+    };
 
     const handleFieldSearch = async () => {
         try {
@@ -57,9 +69,13 @@ export const Crop = () => {
         try {
             await dispatch(saveCrops(formData));
             dispatch(getCrops());
-            console.log("Crop data saved successfully.");
+            toast.success("Crop Data Saved Successfully !");
+            handleClear();
         } catch (e) {
             console.error("Error saving crop data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Crop Data !");
+            }
         }
     };
 
@@ -67,9 +83,14 @@ export const Crop = () => {
         try {
             await dispatch(deleteCrops(cropCode));
             dispatch(getCrops());
+            handleClear();
             console.log("Crop data deleted successfully.");
+            toast.success("Crop Data Deleted Successfully !");
         } catch (e) {
             console.error("Error deleting crop data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Crop Data !");
+            }
         }
     };
 
@@ -86,9 +107,13 @@ export const Crop = () => {
         try {
             await dispatch(updateCrops(formData));
             dispatch(getCrops());
-            console.log("Crop data updated successfully.");
+            handleClear();
+            toast.success("Crop Data Updated Successfully !");
         } catch (e) {
             console.error("Error updating crop data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Crop Data !");
+            }
         }
     };
 
@@ -106,22 +131,13 @@ export const Crop = () => {
                 if (fetchedFields.payload) {
                     setFieldName(fetchedFields.payload.field_name);
                 }
+                setSearchedCrop('');
             } else {
                 console.warn("No crop data found.");
             }
         } catch (e) {
             console.error("Error fetching crops data:", e);
         }
-    };
-
-    const handleClear = async () => {
-        setCropCode('');
-        setCategory('');
-        setCommonName('');
-        setScientificName('');
-        setSeason('');
-        setFieldCode('');
-        if (inoutRefImg.current) inoutRefImg.current.value = '';
     };
 
     return (
@@ -222,7 +238,7 @@ export const Crop = () => {
                         <button type="button" className="btn btn-warning" id="clear-crops" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
-
+                <ToastContainer/>
                 {/*Search Section*/}
                 <div id="search-crops-div">
                     {/*Label for Search*/}
@@ -230,6 +246,7 @@ export const Crop = () => {
                     <input id="txtSearch-crops" className="form-control" type="text"
                            placeholder="Search by code or category"
                            aria-label="default input example"
+                           value={SearchedCrop}
                     onChange={(e) => setSearchedCrop(e.target.value)}/>
                     {/*Search Button*/}
                     <button id="search-crop" type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
