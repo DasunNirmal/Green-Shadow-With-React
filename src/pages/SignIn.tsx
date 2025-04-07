@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
 import {useEffect, useState} from "react";
 import {loginUser} from "../reducers/UserSlice.ts";
+import {toast, ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const SignIn = () => {
 
@@ -89,7 +91,9 @@ export const SignIn = () => {
                 clearFields();
                 console.log("Stored Token:", localStorage.getItem('jwt_token')); // Verify token is stored
             } catch (error) {
-                console.error(error);
+                if (error instanceof Error) {
+                    toast.error("Email or Password is incorrect try again !");
+                }
             }
         }
     };
@@ -385,6 +389,7 @@ export const SignIn = () => {
             <h5 id="welcome-text-2" className="animate__animated animate__lightSpeedInLeft">Pickup Where Your Left
                 Off</h5>
 
+            <ToastContainer/>
             <section id="login-section">
                 <div id="login-form-wrapper" className="animate__animated animate__lightSpeedInLeft">
 
