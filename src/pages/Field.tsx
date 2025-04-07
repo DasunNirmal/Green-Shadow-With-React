@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Fields} from "../models/Fields.ts";
 import {AppDispatch} from "../store/Store.ts";
 import {deleteFields, getFields, saveFields, searchFields, updateFields} from "../reducers/FieldsSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Field = () => {
 
@@ -27,6 +29,17 @@ export const Field = () => {
         dispatch(getFields());
     },[dispatch,fields.length]);
 
+    const handleClear = async () => {
+        setFieldID('');
+        setFieldName('');
+        setFieldLocation('');
+        setFieldSize('');
+        if (inputRefForImg_01.current != null && inputRefForImg_02.current != null) {
+            inputRefForImg_01.current.value = '';
+            inputRefForImg_02.current.value = '';
+        }
+    };
+
     const handleSubmit = async () => {
         const formData = new FormData();
         formData.append("field_code", fieldID);
@@ -39,11 +52,15 @@ export const Field = () => {
         if (fieldImage_2) formData.append("img_02", fieldImage_2);
 
         try {
-            await dispatch(saveFields(formData));
+            await dispatch(saveFields(formData)).unwrap();
             dispatch(getFields());
-            console.log("Field data saved successfully.");
+            handleClear();
+            toast.success("Field data saved successfully !");
         } catch (e) {
             console.error("Error saving field data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Field Data !");
+            }
         }
     };
 
@@ -51,9 +68,13 @@ export const Field = () => {
         try {
             await dispatch(deleteFields(fieldID));
             dispatch(getFields());
-            console.log("Field data deleted successfully.");
+            handleClear();
+            toast.success("Field data deleted successfully !");
         } catch (e) {
             console.error("Error deleting field data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Field Data !");
+            }
         }
     };
 
@@ -69,9 +90,13 @@ export const Field = () => {
         try {
             await dispatch(updateFields(formData));
             dispatch(getFields());
-            console.log("Field data updated successfully.");
+            handleClear();
+            toast.success("Field data updated successfully !");
         } catch (e) {
             console.error("Error updating field data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Field Data !");
+            }
         }
     };
 
@@ -83,22 +108,12 @@ export const Field = () => {
                 setFieldName(fetchedFields.payload.field_name);
                 setFieldLocation(fetchedFields.payload.field_location);
                 setFieldSize(fetchedFields.payload.extent_size);
+                setSearchedField('');
             } else {
                 console.warn("No field data found.");
             }
         } catch (e) {
             console.error("Error fetching fields data:", e);
-        }
-    };
-
-    const handleClear = async () => {
-        setFieldID('');
-        setFieldName('');
-        setFieldLocation('');
-        setFieldSize('');
-        if (inputRefForImg_01.current != null && inputRefForImg_02.current != null) {
-            inputRefForImg_01.current.value = '';
-            inputRefForImg_02.current.value = '';
         }
     };
 
@@ -178,11 +193,13 @@ export const Field = () => {
                         <button type="button" className="btn btn-warning" id="clear-fields" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
+                <ToastContainer/>
                 {/*Search Section*/}
                 <div id="search-fields-div">
                     {/*Label for Search*/}
                     <label id="lblSearchFields" htmlFor="txtSearch-fields">Search Fields :</label>
                     <input id="txtSearch-fields" className="form-control" type="text" placeholder="Search by ID or size"
+                           value={SearchedField}
                            aria-label="default input example" onChange={(e) => setSearchedField(e.target.value)}/>
                     {/*Search Button*/}
                     <button id="search-field" type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
