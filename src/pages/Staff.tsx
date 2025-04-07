@@ -6,6 +6,8 @@ import Staffs from "../models/Staffs.ts";
 import {useEffect, useState} from "react";
 import {searchFields} from "../reducers/FieldsSlice.ts";
 import {deleteStaffs, getStaffs, saveStaffs, searchStaffs, updateStaffs} from "../reducers/StaffsSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Staff = () => {
 
@@ -83,9 +85,12 @@ export const Staff = () => {
           await dispatch(saveStaffs(staffObj));
           dispatch(getStaffs());
           handleClear();
-          console.log("Staff data saved successfully.");
+          toast.success("Staff Data Saved successfully !");
       } catch (e) {
           console.error("Error saving staff data:", e);
+          if (e instanceof Error) {
+              toast.error("Error Saving Staff Data !");
+          }
       }
     };
 
@@ -94,9 +99,12 @@ export const Staff = () => {
             await dispatch(deleteStaffs(staffID));
             dispatch(getStaffs());
             handleClear();
-            console.log("Staff data deleted successfully.");
+            toast.success("Staff Data Deleted successfully !");
         } catch (e) {
             console.error("Error deleting staff data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Staff Data !");
+            }
         }
     };
 
@@ -107,9 +115,12 @@ export const Staff = () => {
             await dispatch(updateStaffs(staffObj));
             dispatch(getStaffs());
             handleClear();
-            console.log("Staff data updated successfully.");
+            toast.success("Staff Data Updated successfully !");
         } catch (e) {
             console.error("Error updating staff data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Staff Data !");
+            }
         }
     };
 
@@ -324,7 +335,7 @@ export const Staff = () => {
                         <button type="button" className="btn btn-warning" id="clear-staff" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
-
+                <ToastContainer/>
                 {/*Search Section*/}
                 <div id="search-staff-div">
                     {/*Label for Search*/}
