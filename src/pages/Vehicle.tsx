@@ -6,6 +6,8 @@ import Vehicles from "../models/Vehicle.ts";
 import {useEffect, useState} from "react";
 import {searchStaffs} from "../reducers/StaffsSlice.ts";
 import {deleteVehicles, getVehicles, saveVehicles, searchVehicles, updateVehicles} from "../reducers/VehicleSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Vehicle = () => {
 
@@ -70,9 +72,12 @@ export const Vehicle = () => {
             await dispatch(saveVehicles(vehicleObj));
             dispatch(getVehicles());
             handleClear();
-            console.log("Vehicle data saved successfully.");
+            toast.success("Vehicle Data Saved Successfully !");
         } catch (e) {
             console.error("Error saving vehicle data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Vehicle Data !");
+            }
         }
     };
 
@@ -81,9 +86,12 @@ export const Vehicle = () => {
             await dispatch(deleteVehicles(vehicleCode));
             dispatch(getVehicles());
             handleClear();
-            console.log("Vehicle data deleted successfully.");
+            toast.success("Vehicle Data Deleted Successfully !");
         } catch (e) {
             console.error("Error deleting vehicle data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Vehicle Data !");
+            }
         }
     };
 
@@ -93,9 +101,12 @@ export const Vehicle = () => {
             await dispatch(updateVehicles(vehicleObj));
             dispatch(getVehicles());
             handleClear();
-            console.log("Vehicle data updated successfully.");
+            toast.success("Vehicle Data Updated Successfully !");
         } catch (e) {
             console.error("Error updating vehicle data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Vehicle Data !");
+            }
         }
     };
 
@@ -248,7 +259,7 @@ export const Vehicle = () => {
                         <button type="button" className="btn btn-warning" id="clear-vehicles" onClick={handleClear}>Clear</button>
                     </div>
                 </div>
-
+                <ToastContainer/>
                 {/*Search Section*/}
                 <div id="search-vehicles-div">
                     {/*Label for Search*/}
