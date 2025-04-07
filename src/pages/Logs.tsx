@@ -5,25 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
 import FieldLogs from "../models/FieldLogs.ts";
 import {searchFields} from "../reducers/FieldsSlice.ts";
-import {
-    deleteFieldLogs,
-    getFieldLogs,
-    saveFieldLogs,
-    searchFieldLogs,
-    updateFieldLogs
-} from "../reducers/FieldLogsSlice.ts";
+import {deleteFieldLogs, getFieldLogs, saveFieldLogs, searchFieldLogs, updateFieldLogs} from "../reducers/FieldLogsSlice.ts";
 import CropLogs from "../models/CropLogs.ts";
 import {searchCrops} from "../reducers/CropsSlice.ts";
 import {deleteCropLogs, getCropLogs, saveCropLogs, searchCropLogs, updateCropLogs} from "../reducers/CropLogsSlice.ts";
 import StaffLogs from "../models/StaffLogs.ts";
-import {
-    deleteStaffLogs,
-    getStaffLogs,
-    saveStaffLogs,
-    searchStaffLogs,
-    updateStaffLogs
-} from "../reducers/StaffLogsSlice.ts";
+import {deleteStaffLogs, getStaffLogs, saveStaffLogs, searchStaffLogs, updateStaffLogs} from "../reducers/StaffLogsSlice.ts";
 import {searchStaffs} from "../reducers/StaffsSlice.ts";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Logs = () => {
 
@@ -174,9 +164,12 @@ export const Logs = () => {
             await dispatch(saveFieldLogs(formData));
             dispatch(getFieldLogs());
             handleClear();
-            console.log("Field Logs data saved successfully.");
+            toast.success("Data Saved Successfully !");
         } catch (e) {
             console.error("Error saving field logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Data !");
+            }
         }
     };
 
@@ -192,9 +185,12 @@ export const Logs = () => {
             await dispatch(saveCropLogs(formData));
             dispatch(getCropLogs());
             handleClear();
-            console.log("Crop Logs data saved successfully.");
+            toast.success("Data Saved Successfully !");
         } catch (e) {
             console.error("Error saving crop logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Data !");
+            }
         }
     };
 
@@ -211,9 +207,12 @@ export const Logs = () => {
             await dispatch(saveStaffLogs(formData));
             dispatch(getStaffLogs());
             handleClear();
-            console.log("Staff Logs data saved successfully.");
+            toast.success("Data Saved Successfully !");
         } catch (e) {
             console.error("Error saving staff logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Saving Data !");
+            }
         }
     };
 
@@ -222,9 +221,12 @@ export const Logs = () => {
             await dispatch(deleteFieldLogs(fieldLogCode));
             dispatch(getFieldLogs());
             handleClear();
-            console.log("Field Logs data deleted successfully.");
+            toast.success("Data Deleted successfully !");
         } catch (e) {
             console.error("Error deleting field logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Data !");
+            }
         }
     };
 
@@ -233,9 +235,12 @@ export const Logs = () => {
             await dispatch(deleteCropLogs(cropLogCode));
             dispatch(getCropLogs());
             handleClear();
-            console.log("Crop Logs data deleted successfully.");
+            toast.success("Data Deleted successfully !");
         } catch (e) {
             console.error("Error deleting crop logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Data !");
+            }
         }
     };
 
@@ -244,9 +249,12 @@ export const Logs = () => {
             await dispatch(deleteStaffLogs(staffLogCode));
             dispatch(getStaffLogs());
             handleClear();
-            console.log("Staff Logs data deleted successfully.");
+            toast.success("Data Deleted successfully !");
         } catch (e) {
             console.error("Error deleting staff logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Deleting Data !");
+            }
         }
     };
 
@@ -263,9 +271,12 @@ export const Logs = () => {
             await dispatch(updateFieldLogs(formData));
             dispatch(getFieldLogs());
             handleClear();
-            console.log("Field Logs data updated successfully.");
+            toast.success("Data Updated successfully !");
         } catch (e) {
             console.error("Error updating field logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Data !");
+            }
         }
     };
 
@@ -280,9 +291,12 @@ export const Logs = () => {
         try {
             await dispatch(updateCropLogs(formData));
             dispatch(getCropLogs());
-            console.log("Crop Logs data updated successfully.");
+            toast.success("Data Updated successfully !");
         } catch (e) {
             console.error("Error updating crop logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Data !");
+            }
         }
     };
 
@@ -299,9 +313,12 @@ export const Logs = () => {
             await dispatch(updateStaffLogs(formData));
             dispatch(getStaffLogs());
             handleClear();
-            console.log("Staff Logs data updated successfully.");
+            toast.success("Data Updated successfully !");
         } catch (e) {
             console.error("Error updating staff logs data:", e);
+            if (e instanceof Error) {
+                toast.error("Error Updating Data !");
+            }
         }
     }
 
@@ -478,7 +495,7 @@ export const Logs = () => {
                             <button type="button" className="btn btn-warning" id="clear-field-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
-
+                    <ToastContainer/>
                     {/*Search Section*/}
                     <div id="search-field-logs-tbl-div">
                         {/*Label for Search*/}
@@ -605,7 +622,7 @@ export const Logs = () => {
                             <button type="button" className="btn btn-warning" id="clear-crop-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
-
+                    <ToastContainer/>
                     {/*Search Section*/}
                     <div id="search-crop-logs-tbl-div">
                         {/*Label for Search*/}
@@ -738,7 +755,7 @@ export const Logs = () => {
                             <button type="button" className="btn btn-warning" id="clear-staff-logs" onClick={handleClear}>Clear</button>
                         </div>
                     </div>
-
+                    <ToastContainer/>
                     {/*Search Section*/}
                     <div id="search-staff-logs-tbl-div">
                         {/*Label for Search*/}
